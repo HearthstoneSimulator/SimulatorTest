@@ -1,0 +1,13 @@
+﻿<Window x:Class="Hearthstone.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MainWindow" Height="350" Width="525">
+    <Grid>
+        <Label x:Name="mujlabel" Content="test" HorizontalAlignment="Left" Height="31" Margin="29,10,0,0" VerticalAlignment="Top" Width="464"/>
+        <Button Content="Button" HorizontalAlignment="Left" Height="31" Margin="358,259,0,0" VerticalAlignment="Top" Width="135" Click="Button_Click"/>
+        <ListBox x:Name="mujlist" Height="86" Margin="29,71,0,0" VerticalAlignment="Top" SelectionChanged="ListBox_SelectionChanged" HorizontalAlignment="Left" Width="464"/>
+        <ListBox x:Name="mujeventlist" HorizontalAlignment="Left" Height="71" Margin="29,162,0,0" VerticalAlignment="Top" Width="464"/>
+        <Button Content="Button" HorizontalAlignment="Left" Height="31" Margin="76,259,0,0" VerticalAlignment="Top" Width="122" Click="Button_Click_1"/>
+
+    </Grid>
+</Window>

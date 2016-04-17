@@ -1,0 +1,164 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Cards xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="C:/Users/Marin/Documents/Visual Studio 2013/Projects/Hearthstone/XMLCardBase.xsd">
+  <Card>
+    <Name>Chillwind Yeti</Name>
+    <Attack>4</Attack>
+    <HP>5</HP>
+    <Manacost>4</Manacost>
+  </Card>
+  <Card>
+    <Name>Elven Archer</Name>
+    <Attack>1</Attack>
+    <HP>1</HP>
+    <Manacost>1</Manacost>
+    <Skills>
+      <Battlecry>
+        <Effect>
+          <Kind>Damage_dealing</Kind>
+          <Target>CHARACTER</Target>
+          <Targets>1</Targets>
+          <Selection>PLAYER</Selection>
+          <Ammount>1</Ammount>
+        </Effect>
+      </Battlecry>
+    </Skills>
+  </Card>
+  <Card>
+    <Name>Goldshire Footman</Name>
+    <Attack>1</Attack>
+    <HP>2</HP>
+    <Manacost>1</Manacost>
+    <Skills>
+      <Taunt/>
+    </Skills>
+  </Card>
+  <Card>
+    <Name>Grimscale Oracle</Name>
+    <Attack>1</Attack>
+    <HP>1</HP>
+    <Manacost>1</Manacost>
+    <Type>Murloc</Type>
+    <Skills>
+      <Aura>
+        <Effect>
+          <Kind>Buff</Kind>
+          <Target></Target>
+        </Effect>
+      </Aura>
+    </Skills>
+  </Card>
+  <Card>
+    <Name>Murloc Raider</Name>
+    <Attack>2</Attack>
+    <HP>1</HP>
+    <Manacost>1</Manacost>
+    <Type>Murloc</Type>
+  </Card>
+  <Card>
+    <Name>Stonetusk Boar</Name>
+    <Attack>1</Attack>
+    <HP>1</HP>
+    <Manacost>1</Manacost>
+    <Type>Beast</Type>
+    <Skills>
+      <Charge/>
+    </Skills>
+  </Card>
+  <Card>
+    <Name>Voodoo Doctor</Name>
+    <Attack>2</Attack>
+    <HP>1</HP>
+    <Manacost>1</Manacost>
+    <Skills>
+      <Battlecry>
+        <Effect>
+          <Kind>Heal</Kind>
+          <Target>CHARACTER</Target>
+          <Targets>1</Targets>
+          <Selection>Player</Selection>
+          <Ammount>2</Ammount>
+        </Effect>
+      </Battlecry>
+    </Skills>
+  </Card>
+  <Card>
+    <Name>Acidic Swamp Ooze</Name>
+    <Attack>3</Attack>
+    <HP>2</HP>
+    <Manacost>2</Manacost>
+    <Skills>
+      <Battlecry>
+        <Effect>
+          <Kind>Destroy_Enemy_Weapon</Kind>
+        </Effect>
+      </Battlecry>
+    </Skills>
+  </Card>
+  <Card>
+    <Name>Bloodfen Raptor</Name>
+    <Attack>3</Attack>
+    <HP>2</HP>
+    <Manacost>2</Manacost>
+    <Type>Beast</Type>
+  </Card>
+  <Card>
+    <Name>Bluegill Warrior</Name>
+    <Attack>2</Attack>
+    <HP>1</HP>
+    <Manacost>2</Manacost>
+    <Type>Murloc</Type>
+    <Skills>
+      <Charge/>
+    </Skills>
+  </Card>
+  <Card>
+    <Name>Frostwolf Grunt</Name>
+    <Attack>2</Attack>
+    <HP>2</HP>
+    <Manacost>2</Manacost>
+    <Skills>
+      <Taunt/>
+    </Skills>
+  </Card>
+  <Card>
+    <Name>Kobold Geomancer</Name>
+    <Attack>2</Attack>
+    <HP>2</HP>
+    <Manacost>2</Manacost>
+    <Skills>
+      <Spelldamage>1</Spelldamage>
+    </Skills>
+  </Card>
+  <Card>
+    <Name>Murloc Tidehunter</Name>
+    <Attack>2</Attack>
+    <HP>1</HP>
+    <Manacost>2</Manacost>
+    <Type>Murloc</Type>
+    <Skills>
+      <Battlecry>
+        <Effect>
+          <Kind>Summon</Kind>
+          <Target>Murloc scout</Target>
+          <Ammount>1</Ammount>
+          <Side>PLAYER</Side>
+        </Effect>
+      </Battlecry>
+    </Skills>
+  </Card>
+  <Card>
+    <Name>Novice Engineer</Name>
+    <Attack>1</Attack>
+    <HP>1</HP>
+    <Manacost>2</Manacost>
+    <Skills>
+      <Battlecry>
+        <Effect>
+          <Kind>Card_Draw</Kind>
+          <Target>PLAYER</Target>
+          <Ammount>1</Ammount>
+        </Effect>
+      </Battlecry>
+    </Skills>
+  </Card>
+</Cards>
