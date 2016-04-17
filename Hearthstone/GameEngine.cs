@@ -46,7 +46,7 @@ namespace Hearthstone
 
         public override GenericAction getAction(GameRepresentation Game)
         {
-            
+            //new commentary
             throw new NotImplementedException();
         }
     }
