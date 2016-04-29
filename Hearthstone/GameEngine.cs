@@ -12,7 +12,7 @@ namespace Hearthstone
 {
     public enum Tags
     {
-        //Target related
+        //Target related asdr s
         Self,Other,Any,Own,Enemy
         
     }
@@ -684,6 +684,7 @@ namespace Hearthstone
                 }
             }
         }
+        
         public Abbility ParseAbbility(XElement Abbilityxml)
         {
              Abbility ab = new Abbility(Abbilityxml.Element("Type").Value);
@@ -746,8 +747,10 @@ namespace Hearthstone
                  {
                      //TODO spells
                  }
-                 if ((newcard.name=="Grimscale Oracle"||newcard.name == "Elven Archer")&& item.Element("Skills") != null  )
+                //Loading skills
+                 if (item.Element("Skills") != null  )
                  {
+                     //Card has some skills -> load them one by one
                      foreach (XElement skill in item.Element("Skills").Elements("Skill"))
                      {
                          Abbility abb = ParseAbbility(skill);
@@ -755,10 +758,11 @@ namespace Hearthstone
                          newcard.Skills.Add(abb);
                      }
                  }
+                //Add the card to the Card Database
                 Game.AllCards.Add(newcard);
             }
 
-
+            //Creating decks and setting up the game itself
             for (int i = 0; i < 2; i++)
             {
                 Game.Manapool.Add( new Mana());

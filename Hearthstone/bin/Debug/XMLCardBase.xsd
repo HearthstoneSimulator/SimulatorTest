@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning" elementFormDefault="qualified" attributeFormDefault="unqualified" vc:minVersion="1.1">
+	<xs:element name="Cards">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Card" type="CardT" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="CardT">
+		<xs:sequence>
+			<xs:element name="Name" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="Attack" type="xs:integer" default="0" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="HP" type="xs:integer" default="0" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="Manacost" type="xs:integer" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="Tags" type="TagsT" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="Skills" type="SkillsT" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="TagsT">
+<xs:sequence>
+<xs:element name="Minion" minOccurs="0"/>
+<xs:element name="Spell" minOccurs="0"/>
+<!--List of Minion Types-->
+<xs:element name="Murloc" minOccurs="0"/>
+<xs:element name="Beast" minOccurs="0"/>
+<xs:element name="Demon" minOccurs="0"/>
+<xs:element name="Totem" minOccurs="0"/>
+<xs:element name="Mech" minOccurs="0"/>
+<!--List of minion basic abbilities-->
+<xs:element name="Taunt" minOccurs="0"/>
+<xs:element name="Charge" minOccurs="0"/>
+<xs:element name="Spell_Damage" type="xs:integer" default="1" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="SkillsT">
+<xs:sequence>
+<xs:element name="Skill" type="SkillT" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="SkillT">
+
+</xs:complexType>
+
+</xs:schema>
