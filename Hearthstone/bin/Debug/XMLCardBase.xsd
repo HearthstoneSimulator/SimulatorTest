@@ -18,30 +18,79 @@
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="TagsT">
+		<xs:sequence>
+			<xs:element name="Minion" minOccurs="0"/>
+			<xs:element name="Spell" minOccurs="0"/>
+			<!--List of Minion Types-->
+			<xs:element name="Murloc" minOccurs="0"/>
+			<xs:element name="Beast" minOccurs="0"/>
+			<xs:element name="Demon" minOccurs="0"/>
+			<xs:element name="Totem" minOccurs="0"/>
+			<xs:element name="Mech" minOccurs="0"/>
+			<!--List of minion basic abbilities-->
+			<xs:element name="Taunt" minOccurs="0"/>
+			<xs:element name="Charge" minOccurs="0"/>
+			<xs:element name="Spell_Damage" type="xs:integer" default="1" minOccurs="0"/>
+			<!--List of tags responsible for subset selection-->
+			<xs:element name="All" minOccurs="0"/>
+			<xs:element name="Other" minOccurs="0"/>
+			<xs:element name="Enemy" minOccurs="0"/>
+			<xs:element name="Own" minOccurs="0"/>
+			<xs:element name="Player" minOccurs="0"/>
+			<xs:element name="Random" minOccurs="0"/>
+			<xs:element name="Any" minOccurs="0"/>
+			<xs:element name="Self" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SkillsT">
+		<xs:sequence>
+			<xs:element name="Skill" type="SkillT" maxOccurs="unbounded" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+		<xs:complexType name="EffectT">
 <xs:sequence>
-<xs:element name="Minion" minOccurs="0"/>
-<xs:element name="Spell" minOccurs="0"/>
-<!--List of Minion Types-->
-<xs:element name="Murloc" minOccurs="0"/>
-<xs:element name="Beast" minOccurs="0"/>
-<xs:element name="Demon" minOccurs="0"/>
-<xs:element name="Totem" minOccurs="0"/>
-<xs:element name="Mech" minOccurs="0"/>
-<!--List of minion basic abbilities-->
-<xs:element name="Taunt" minOccurs="0"/>
-<xs:element name="Charge" minOccurs="0"/>
-<xs:element name="Spell_Damage" type="xs:integer" default="1" minOccurs="0"/>
+<xs:element name="Function">
+<xs:complexType mixed="true">
+<xs:attribute name="Attack" type="xs:integer"/>
+<xs:attribute name="AttackModificationType">
+<xs:simpleType>
+	<xs:restriction base="xs:string">
+	<xs:enumeration value="ADDITION"/>
+	<xs:enumeration value="SUBSTRACTION"/>
+	<xs:enumeration value="SET"/>
+	</xs:restriction>
+</xs:simpleType>
+</xs:attribute>
+<xs:attribute name="targets" type="xs:integer"/>
+<xs:attribute name="value" type="xs:integer"/>
+<xs:attribute name="selector">
+<xs:simpleType>
+	<xs:restriction base="xs:string">
+	<xs:enumeration value="PLAYER"/>
+	<xs:enumeration value="RANDOM"/>
+	<xs:enumeration value="ALL"/>
+	<xs:enumeration value="AUTO"/>
+	</xs:restriction>
+</xs:simpleType>
+</xs:attribute>
+</xs:complexType>
+</xs:element>
+
 </xs:sequence>
 </xs:complexType>
-
-<xs:complexType name="SkillsT">
-<xs:sequence>
-<xs:element name="Skill" type="SkillT" maxOccurs="unbounded"/>
-</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="SkillT">
-
-</xs:complexType>
-
+	<xs:complexType name="TypeOfSkillT">
+	</xs:complexType>
+	<xs:complexType name="SkillT">
+		<xs:sequence>
+			<xs:element name="Type"/>
+			<xs:element name="Target">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Tags" type="TagsT"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Effect" type="EffectT"/>
+		</xs:sequence>
+	</xs:complexType>
 </xs:schema>

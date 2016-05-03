@@ -120,7 +120,7 @@
     <Tags>
       <Minion/>
     </Tags>
-    <Skills>
+    <Skills><!--
       <Battlecry>
         <Effect>
           <Kind>Heal</Kind>
@@ -129,7 +129,7 @@
           <Selection>Player</Selection>
           <Ammount>2</Ammount>
         </Effect>
-      </Battlecry>
+      </Battlecry>-->
     </Skills>
   </Card>
   <Card>
@@ -140,12 +140,12 @@
     <Tags>
       <Minion/>
     </Tags>
-    <Skills>
+    <Skills><!--
       <Battlecry>
         <Effect>
           <Kind>Destroy_Enemy_Weapon</Kind>
         </Effect>
-      </Battlecry>
+      </Battlecry>-->
     </Skills>
   </Card>
   <Card>
@@ -155,8 +155,8 @@
     <Manacost>2</Manacost>
     <Tags>
       <Minion/>
+      <Beast/>
     </Tags>
-    <Type>Beast</Type>
   </Card>
   <Card>
     <Name>Bluegill Warrior</Name>
@@ -165,10 +165,11 @@
     <Manacost>2</Manacost>
     <Tags>
       <Minion/>
+      <Murloc/> 
+	  <Charge/>
     </Tags>
-    <Type>Murloc</Type>
     <Skills>
-      <Charge/>
+     
     </Skills>
   </Card>
   <Card>
@@ -188,9 +189,9 @@
     <Manacost>2</Manacost>
     <Tags>
       <Minion/>
+      <Spell_Damage>1</Spell_Damage>
     </Tags>
     <Skills>
-      <Spelldamage>1</Spelldamage>
     </Skills>
   </Card>
   <Card>
@@ -202,8 +203,7 @@
       <Minion/>
       <Murloc/>
     </Tags>
-    <Type>Murloc</Type>
-    <Skills>
+    <Skills><!--
       <Battlecry>
         <Effect>
           <Kind>Summon</Kind>
@@ -211,7 +211,7 @@
           <Ammount>1</Ammount>
           <Side>PLAYER</Side>
         </Effect>
-      </Battlecry>
+      </Battlecry>-->
     </Skills>
   </Card>
   <Card>
@@ -222,14 +222,14 @@
     <Tags>
       <Minion/>
     </Tags>
-    <Skills>
+    <Skills><!--
       <Battlecry>
         <Effect>
           <Kind>Card_Draw</Kind>
           <Target>PLAYER</Target>
           <Ammount>1</Ammount>
         </Effect>
-      </Battlecry>
+      </Battlecry>-->
     </Skills>
   </Card>
   <Card>
@@ -248,7 +248,7 @@
     <Manacost>3</Manacost>
     <Tags>
       <Minion/>
-      <Spell_Damage value="1"/>
+      <Spell_Damage >1</Spell_Damage>
     </Tags>
   </Card>
   <Card>
@@ -314,9 +314,8 @@
       <Minion/>
     </Tags>
     <Skills>
-      <Battlecry>
 <!--TODO-->
-      </Battlecry>
+     
     </Skills>
   </Card>
   <Card>
@@ -326,8 +325,9 @@
     <Manacost>3</Manacost>
     <Tags>
       <Minion/>
+	  <Beast/>
       <Taunt/>
-      <Beast/>
+      
     </Tags>
   </Card>
   <Card>
@@ -383,8 +383,9 @@
       <HP>4</HP>
       <Manacost>4</Manacost>
       <Tags>
-        <Spell_Damage value="1"/>
-        <Minion/>
+		<Minion/>
+        <Spell_Damage>1</Spell_Damage>
+        
       </Tags>
     </Card>
     <Card>
@@ -393,8 +394,8 @@
       <HP>5</HP>
       <Manacost>4</Manacost>
       <Tags>
-        <Taunt/>
-        <Minion/>
+       
+        <Minion/> <Taunt/>
       </Tags>
     </Card>
   <Card>
@@ -412,9 +413,9 @@
     <Attack>5</Attack>
     <HP>4</HP>
     <Manacost>5</Manacost>
-    <Tags>
+    <Tags><Minion/>
       <Taunt/>
-      <Minion/>
+      
     </Tags>
   </Card>
   <Card>
@@ -514,9 +515,9 @@
     <Attack>4</Attack>
     <HP>7</HP>
     <Manacost>6</Manacost>
-    <Tags>
-      <Spell_Damage value="1"/>
-      <Minion/>
+    <Tags><Minion/>
+      <Spell_Damage>1</Spell_Damage>
+      
     </Tags>
   </Card>
   <Card>
@@ -533,9 +534,9 @@
     <Attack>5</Attack>
     <HP>2</HP>
     <Manacost>6</Manacost>
-    <Tags>
+    <Tags><Minion/>
       <Charge/>
-      <Minion/>
+      
     </Tags>
   </Card>
   <Card>
@@ -561,9 +562,9 @@
         <!--Aura works in following way: game watches for any manipulation with cards, when such happens, if said card did not have aura buff already, it is given one. If the Aura Provider dies, all auras are removed.-->
         <Target>
           <Tags>
-            <Minion/>
+            <Minion/><Other/>
             <Own/>
-            <Other/>
+            
           </Tags>
         </Target>
         <Effect>
