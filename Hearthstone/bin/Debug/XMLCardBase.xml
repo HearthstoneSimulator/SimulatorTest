@@ -1,36 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Cards xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="XMLCardBase.xsd">
-  <Card>
-    <Name>Chillwind Yeti</Name>
-    <Attack>4</Attack>
-    <HP>5</HP>
-    <Manacost>4</Manacost>
-    <Tags>
-      <Minion/>
-    </Tags>
-  </Card>
-  <Card>
-    <Name>Elven Archer</Name>
-    <Attack>1</Attack>
-    <HP>1</HP>
-    <Manacost>1</Manacost>
-    <Tags>
-      <Minion/>
-    </Tags>
-    <Skills>
-      <Skill>
-        <Type>Battlecry</Type>
-        <Target>
-          <Tags>
-            <Any/>
-            <!--nothing means any... this specifies the set of possible targets-->
-          </Tags>
-        </Target>
-        <Effect>
-          <Function targets="1" value="1" selector="PLAYER">Deal_Damage</Function>
-        </Effect>
-      </Skill>
-      <!--
+	<Card>
+		<Name>Chillwind Yeti</Name>
+		<Attack>4</Attack>
+		<HP>5</HP>
+		<Manacost>4</Manacost>
+		<Tags>
+			<Minion/>
+		</Tags>
+	</Card>
+	<Card>
+		<Name>Elven Archer</Name>
+		<Attack>1</Attack>
+		<HP>1</HP>
+		<Manacost>1</Manacost>
+		<Tags>
+			<Minion/>
+		</Tags>
+		<Skills>
+			<Skill>
+				<Type>Battlecry</Type>
+				<Target>
+					<Tags>
+						<Any/>
+						<!--nothing means any... this specifies the set of possible targets-->
+					</Tags>
+				</Target>
+				<Effect>
+					<Function targets="1" value="1" selector="PLAYER">Deal_Damage</Function>
+				</Effect>
+			</Skill>
+			<!--
       <Battlecry>
         <Effect>
           <Kind>Damage_dealing</Kind>
@@ -40,45 +40,47 @@
           <Ammount>1</Ammount>
         </Effect>
       </Battlecry>-->
-    </Skills>
-  </Card>
-  <Card>
-    <Name>Goldshire Footman</Name>
-    <Attack>1</Attack>
-    <HP>2</HP>
-    <Manacost>1</Manacost>
-    <Tags>
-      <Minion/>
-      <Taunt/>
-    </Tags>
-  </Card>
-  <Card>
-    <Name>Grimscale Oracle</Name>
-    <Attack>1</Attack>
-    <HP>1</HP>
-    <Manacost>1</Manacost>
-    <Tags>
-      <Minion/>
-      <Murloc/>
-    </Tags>
-    <Skills>
-      <Skill>
-        <Type>Aura</Type><!--Aura works in following way: game watches for any manipulation with cards, when such happens, if said card did not have aura buff already, it is given one. If the Aura Provider dies, all auras are removed.-->
-        <Target>
-          <Tags>
-            <Minion/>
-            <Murloc/>
-            <Other/>
-          </Tags>
-        </Target>
-        <Effect>
-          <Function Attack="1" AttackModificationType="ADDITION">Give_Buff</Function>
-        </Effect>
-      </Skill>
-    </Skills>
-    <!--
+		</Skills>
+	</Card>
+	<Card>
+		<Name>Goldshire Footman</Name>
+		<Attack>1</Attack>
+		<HP>2</HP>
+		<Manacost>1</Manacost>
+		<Tags>
+			<Minion/>
+			<Taunt/>
+		</Tags>
+	</Card>
+	<Card>
+		<Name>Grimscale Oracle</Name>
+		<Attack>1</Attack>
+		<HP>1</HP>
+		<Manacost>1</Manacost>
+		<Tags>
+			<Minion/>
+			<Murloc/>
+		</Tags>
+		<Skills>
+			<Skill>
+				<Type>Aura</Type>
+				<!--Aura works in following way: game watches for any manipulation with cards, when such happens, if said card did not have aura buff already, it is given one. If the Aura Provider dies, all auras are removed.-->
+				<Target>
+					<Tags>
+						<Minion/>
+						<Murloc/>
+						<Other/>
+					</Tags>
+				</Target>
+				<Effect>
+					<Function Attack="1" AttackModificationType="ADDITION">Give_Buff</Function>
+				</Effect>
+			</Skill>
+		</Skills>
+		<!--
     <Type>Murloc</Type>
-    --><!--
+    -->
+		<!--
     <Skills>
       <Aura>
         <Effect>
@@ -87,40 +89,52 @@
         </Effect>
       </Aura>
     </Skills>-->
-  </Card>
-  <Card>
-    <Name>Murloc Raider</Name>
-    <Attack>2</Attack>
-    <HP>1</HP>
-    <Manacost>1</Manacost>
-    <Tags>
-      <Minion/>
-      <Murloc/>
-    </Tags>
-    <!--
+	</Card>
+	<Card>
+		<Name>Murloc Raider</Name>
+		<Attack>2</Attack>
+		<HP>1</HP>
+		<Manacost>1</Manacost>
+		<Tags>
+			<Minion/>
+			<Murloc/>
+		</Tags>
+		<!--
     <Type>Murloc</Type>
     -->
-  </Card>
-  <Card>
-    <Name>Stonetusk Boar</Name>
-    <Attack>1</Attack>
-    <HP>1</HP>
-    <Manacost>1</Manacost>
-    <Tags>
-      <Minion/>
-      <Beast/>
-      <Charge/>
-    </Tags>
-  </Card>
-  <Card>
-    <Name>Voodoo Doctor</Name>
-    <Attack>2</Attack>
-    <HP>1</HP>
-    <Manacost>1</Manacost>
-    <Tags>
-      <Minion/>
-    </Tags>
-    <Skills><!--
+	</Card>
+	<Card>
+		<Name>Stonetusk Boar</Name>
+		<Attack>1</Attack>
+		<HP>1</HP>
+		<Manacost>1</Manacost>
+		<Tags>
+			<Minion/>
+			<Beast/>
+			<Charge/>
+		</Tags>
+	</Card>
+	<Card>
+		<Name>Voodoo Doctor</Name>
+		<Attack>2</Attack>
+		<HP>1</HP>
+		<Manacost>1</Manacost>
+		<Tags>
+			<Minion/>
+		</Tags>
+		<Skills>
+			<Skill>
+				<Type>Battlecry</Type>
+				<Target>
+					<Tags>
+						<Any/>
+					</Tags>
+				</Target>
+				<Effect>
+					<Function value="2" targets="1" selector="PLAYER">Heal</Function>
+				</Effect>
+			</Skill>
+			<!--
       <Battlecry>
         <Effect>
           <Kind>Heal</Kind>
@@ -130,80 +144,93 @@
           <Ammount>2</Ammount>
         </Effect>
       </Battlecry>-->
-    </Skills>
-  </Card>
-  <Card>
-    <Name>Acidic Swamp Ooze</Name>
-    <Attack>3</Attack>
-    <HP>2</HP>
-    <Manacost>2</Manacost>
-    <Tags>
-      <Minion/>
-    </Tags>
-    <Skills><!--
+		</Skills>
+	</Card>
+	<Card>
+		<Name>Acidic Swamp Ooze</Name>
+		<Attack>3</Attack>
+		<HP>2</HP>
+		<Manacost>2</Manacost>
+		<Tags>
+			<Minion/>
+		</Tags>
+		<Skills>
+			<!--
       <Battlecry>
         <Effect>
           <Kind>Destroy_Enemy_Weapon</Kind>
         </Effect>
       </Battlecry>-->
-    </Skills>
-  </Card>
-  <Card>
-    <Name>Bloodfen Raptor</Name>
-    <Attack>3</Attack>
-    <HP>2</HP>
-    <Manacost>2</Manacost>
-    <Tags>
-      <Minion/>
-      <Beast/>
-    </Tags>
-  </Card>
-  <Card>
-    <Name>Bluegill Warrior</Name>
-    <Attack>2</Attack>
-    <HP>1</HP>
-    <Manacost>2</Manacost>
-    <Tags>
-      <Minion/>
-      <Murloc/> 
-	  <Charge/>
-    </Tags>
-    <Skills>
+		</Skills>
+	</Card>
+	<Card>
+		<Name>Bloodfen Raptor</Name>
+		<Attack>3</Attack>
+		<HP>2</HP>
+		<Manacost>2</Manacost>
+		<Tags>
+			<Minion/>
+			<Beast/>
+		</Tags>
+	</Card>
+	<Card>
+		<Name>Bluegill Warrior</Name>
+		<Attack>2</Attack>
+		<HP>1</HP>
+		<Manacost>2</Manacost>
+		<Tags>
+			<Minion/>
+			<Murloc/>
+			<Charge/>
+		</Tags>
+		<Skills>
      
     </Skills>
-  </Card>
-  <Card>
-    <Name>Frostwolf Grunt</Name>
-    <Attack>2</Attack>
-    <HP>2</HP>
-    <Manacost>2</Manacost>
-    <Tags>
-      <Minion/>
-      <Taunt/>
-    </Tags>
-  </Card>
-  <Card>
-    <Name>Kobold Geomancer</Name>
-    <Attack>2</Attack>
-    <HP>2</HP>
-    <Manacost>2</Manacost>
-    <Tags>
-      <Minion/>
-      <Spell_Damage>1</Spell_Damage>
-    </Tags>
-    <Skills>
+	</Card>
+	<Card>
+		<Name>Frostwolf Grunt</Name>
+		<Attack>2</Attack>
+		<HP>2</HP>
+		<Manacost>2</Manacost>
+		<Tags>
+			<Minion/>
+			<Taunt/>
+		</Tags>
+	</Card>
+	<Card>
+		<Name>Kobold Geomancer</Name>
+		<Attack>2</Attack>
+		<HP>2</HP>
+		<Manacost>2</Manacost>
+		<Tags>
+			<Minion/>
+			<Spell_Damage>1</Spell_Damage>
+		</Tags>
+		<Skills>
     </Skills>
-  </Card>
-  <Card>
-    <Name>Murloc Tidehunter</Name>
-    <Attack>2</Attack>
-    <HP>1</HP>
-    <Manacost>2</Manacost>
-    <Tags>
-      <Minion/>
-      <Murloc/>
-    </Tags>
-    <Skills><!--
+	</Card>
+	<Card>
+		<Name>Murloc Tidehunter</Name>
+		<Attack>2</Attack>
+		<HP>1</HP>
+		<Manacost>2</Manacost>
+		<Tags>
+			<Minion/>
+			<Murloc/>
+		</Tags>
+		<Skills>
+			<Skill>
+				<Type>Battlecry</Type>
+				<Target>
+					<Tags>
+						<You/>
+					</Tags>
+				</Target>
+				<Effect>
+					<Function summonedCreatureName="Murloc Scout">Summon</Function>
+				</Effect>
+			</Skill>
+			<!--
       <Battlecry>
         <Effect>
           <Kind>Summon</Kind>
@@ -212,17 +239,29 @@
           <Side>PLAYER</Side>
         </Effect>
       </Battlecry>-->
-    </Skills>
-  </Card>
-  <Card>
-    <Name>Novice Engineer</Name>
-    <Attack>1</Attack>
-    <HP>1</HP>
-    <Manacost>2</Manacost>
-    <Tags>
-      <Minion/>
-    </Tags>
-    <Skills><!--
+		</Skills>
+	</Card>
+	<Card>
+		<Name>Novice Engineer</Name>
+		<Attack>1</Attack>
+		<HP>1</HP>
+		<Manacost>2</Manacost>
+		<Tags>
+			<Minion/>
+		</Tags>
+		<Skills>
+			<Skill>
+				<Type>Battlecry</Type>
+				<Target>
+					<Tags>
+						<You/>
+					</Tags>
+				</Target>
+				<Effect>
+					<Function value="1" selector="AUTO">Draw_Card</Function>
+				</Effect>
+			</Skill>
+			<!--
       <Battlecry>
         <Effect>
           <Kind>Card_Draw</Kind>
@@ -230,357 +269,436 @@
           <Ammount>1</Ammount>
         </Effect>
       </Battlecry>-->
-    </Skills>
-  </Card>
-  <Card>
-    <Name>River Crocolisk</Name>
-    <Attack>2</Attack>
-    <HP>3</HP>
-    <Manacost>2</Manacost>
-    <Tags>
-      <Minion/>
-    </Tags>
-  </Card>
-  <Card>
-    <Name>Dalaran Mage</Name>
-    <Attack>1</Attack>
-    <HP>4</HP>
-    <Manacost>3</Manacost>
-    <Tags>
-      <Minion/>
-      <Spell_Damage >1</Spell_Damage>
-    </Tags>
-  </Card>
-  <Card>
-    <Name>Ironforge Rifleman</Name>
-    <Attack>2</Attack>
-    <HP>2</HP>
-    <Manacost>3</Manacost>
-    <Tags>
-      <Minion/>
-    </Tags>
-    <Skills>
-     <Skill>
-        <Type>Battlecry</Type>
-        <Target>
-          <Tags>
-            <Any/>
-            <!--nothing means any... this specifies the set of possible targets-->
-          </Tags>
-        </Target>
-        <Effect>
-          <Function targets="1" value="1" selector="PLAYER">Deal_Damage</Function>
-        </Effect>
-      </Skill>
-    </Skills>
-  </Card>
-  <Card>
-    <Name>Ironfur Grizzly</Name>
-    <Attack>3</Attack>
-    <HP>3</HP>
-    <Manacost>3</Manacost>
-    <Tags>
-      <Minion/>
-      <Taunt/>
-    </Tags>
-  </Card>
-  <Card>
-    <Name>Magma Rager</Name>
-    <Attack>5</Attack>
-    <HP>1</HP>
-    <Manacost>3</Manacost>
-    <Tags>
-      <Minion/>
-    </Tags>
-  </Card>
-  <Card>
-    <Name>Raid Leader</Name>
-    <Attack>2</Attack>
-    <HP>2</HP>
-    <Manacost>3</Manacost>
-    <Tags>
-      <Minion/>
-    </Tags>
-    <Skills>
-      <!--TODO-->
-    </Skills>
-  </Card>
-  <Card>
-    <Name>Razorfen Hunter</Name>
-    <Attack>2</Attack>
-    <HP>3</HP>
-    <Manacost>3</Manacost>
-    <Tags>
-      <Minion/>
-    </Tags>
-    <Skills>
-<!--TODO-->
-     
-    </Skills>
-  </Card>
-  <Card>
-    <Name>Silverback Patriarch</Name>
-    <Attack>1</Attack>
-    <HP>4</HP>
-    <Manacost>3</Manacost>
-    <Tags>
-      <Minion/>
-	  <Beast/>
-      <Taunt/>
-      
-    </Tags>
-  </Card>
-  <Card>
-    <Name>Wolfrider</Name>
-    <Attack>3</Attack>
-    <HP>1</HP>
-    <Manacost>3</Manacost>
-    <Tags>
-      <Minion/>
-    </Tags>
-  </Card>
-  <Card>
-    <Name>Chilwind Yeti</Name>
-    <Attack>4</Attack>
-    <HP>5</HP>
-    <Manacost>4</Manacost>
-    <Tags>
-      <Minion/>
-    </Tags>
-  </Card>
-    <Card>
-      <Name>Dragonling Mechanic</Name>
-      <Attack>2</Attack>
-      <HP>4</HP>
-      <Manacost>4</Manacost>
-      <Tags>
-        <Minion/>
-      </Tags>
-      <!--TODO-->
-    </Card>
-    <Card>
-      <Name>Gnomish Inventor</Name>
-      <Attack>2</Attack>
-      <HP>4</HP>
-      <Manacost>4</Manacost>
-      <Tags>
-        <Minion/>
-      </Tags>
-      <!--TODO-->
-    </Card>
-    <Card>
-      <Name>Oasis Snapjaw</Name>
-      <Attack>2</Attack>
-      <HP>7</HP>
-      <Manacost>4</Manacost>
-      <Tags>
-        <Minion/>
-      </Tags>
-    </Card>
-    <Card>
-      <Name>Ogre Magi</Name>
-      <Attack>4</Attack>
-      <HP>4</HP>
-      <Manacost>4</Manacost>
-      <Tags>
-		<Minion/>
-        <Spell_Damage>1</Spell_Damage>
-        
-      </Tags>
-    </Card>
-    <Card>
-      <Name>Sanjin Shieldmasta</Name>
-      <Attack>3</Attack>
-      <HP>5</HP>
-      <Manacost>4</Manacost>
-      <Tags>
-       
-        <Minion/> <Taunt/>
-      </Tags>
-    </Card>
-  <Card>
-    <Name>Stormwind Knight</Name>
-    <Attack>2</Attack>
-    <HP>5</HP>
-    <Manacost>4</Manacost>
-    <Tags>
-      <Minion/>
-      <Charge/>
-    </Tags>
-  </Card>
-  <Card>
-    <Name>Booty Bay Bodyguard</Name>
-    <Attack>5</Attack>
-    <HP>4</HP>
-    <Manacost>5</Manacost>
-    <Tags><Minion/>
-      <Taunt/>
-      
-    </Tags>
-  </Card>
-  <Card>
-    <Name>Darkscale Healer</Name>
-    <Attack>4</Attack>
-    <HP>5</HP>
-    <Manacost>5</Manacost>
-    <Tags>
-      <Minion/>
-    </Tags>
-    <!--TODO-->
-  </Card>
-  <Card>
-    <Name>Frowstwolf Warlord</Name>
-    <Attack>4</Attack>
-    <HP>4</HP>
-    <Manacost>5</Manacost>
-    <Tags>
-      <Minion/>
-    </Tags>
-    <Skills>
-      <Skill>
-        <Type>Battlecry</Type>
-        <Target>
-          <Tags>
-            <Self/>
-            <!--nothing means any... this specifies the set of possible targets-->
-          </Tags>
-        </Target>
-        <Effect>
-          <Function targets="1" value="2" selector="AUTO">Give_Buff</Function>
-        </Effect>
-      </Skill>
-    </Skills>
-    <!--TODO-->
-  </Card>
-  <Card>
-    <Name>Garubashi Berseker</Name>
-    <Attack>2</Attack>
-    <HP>7</HP>
-    <Manacost>5</Manacost>
-    <Tags>
-      <Minion/>
-    </Tags>
-    <!--TODO-->
-  </Card>
-  <Card>
-    <Name>Nightblade</Name>
-    <Attack>4</Attack>
-    <HP>4</HP>
-    <Manacost>5</Manacost>
-    <Tags>
-      <Minion/>
-    </Tags>
-    <Skills>
-      <Skill>
-        <Type>Battlecry</Type>
-        <Target>
-          <Tags>
-            <Enemy/>
-            <Player/>
-            <!--nothing means any... this specifies the set of possible targets-->
-          </Tags>
-        </Target>
-        <Effect>
-          <Function targets="1" value="3" selector="AUTO">Deal_Damage</Function>
-        </Effect>
-      </Skill>
-    </Skills>
-    <!--TODO-->
-  </Card>
-  <Card>
-    <Name>Stormspike Commando</Name>
-    <Attack>2</Attack>
-    <HP>4</HP>
-    <Manacost>5</Manacost>
-    <Tags>
-      <Minion/>
-    </Tags>
-    <Skills>
-      <Skill>
-        <Type>Battlecry</Type>
-        <Target>
-          <Tags>
-            <Any/>
-            <!--nothing means any... this specifies the set of possible targets-->
-          </Tags>
-        </Target>
-        <Effect>
-          <Function targets="1" value="2" selector="PLAYER">Deal_Damage</Function>
-        </Effect>
-      </Skill>
-    </Skills>
-  </Card>
-  <Card>
-    <Name>Archmage</Name>
-    <Attack>4</Attack>
-    <HP>7</HP>
-    <Manacost>6</Manacost>
-    <Tags><Minion/>
-      <Spell_Damage>1</Spell_Damage>
-      
-    </Tags>
-  </Card>
-  <Card>
-    <Name>Boulderfist Ogre</Name>
-    <Attack>6</Attack>
-    <HP>7</HP>
-    <Manacost>6</Manacost>
-    <Tags>
-      <Minion/>
-    </Tags>
-  </Card>
-  <Card>
-    <Name>Reckless Rocketeer</Name>
-    <Attack>5</Attack>
-    <HP>2</HP>
-    <Manacost>6</Manacost>
-    <Tags><Minion/>
-      <Charge/>
-      
-    </Tags>
-  </Card>
-  <Card>
-    <Name>Core Hound</Name>
-    <Attack>9</Attack>
-    <HP>5</HP>
-    <Manacost>7</Manacost>
-    <Tags>
-      <Minion/>
-    </Tags>
-  </Card>
-  <Card>
-    <Name>Stormwind Champion</Name>
-    <Attack>6</Attack>
-    <HP>6</HP>
-    <Manacost>7</Manacost>
-    <Tags>
-      <Minion/>
-    </Tags>
-    <Skills>
-      <Skill>
-        <Type>Aura</Type>
-        <!--Aura works in following way: game watches for any manipulation with cards, when such happens, if said card did not have aura buff already, it is given one. If the Aura Provider dies, all auras are removed.-->
-        <Target>
-          <Tags>
-            <Minion/><Other/>
-            <Own/>
-            
-          </Tags>
-        </Target>
-        <Effect>
-          <Function Attack="1" AttackModificationType="ADDITION">Give_Buff</Function>
-        </Effect>
-      </Skill>
-    </Skills>
-    <!--TODO-->
-  </Card>
-  <Card>
-    <Name>War Golem</Name>
-    <Attack>7</Attack>
-    <HP>7</HP>
-    <Manacost>7</Manacost>
-    <Tags>
-      <Minion/>
-    </Tags>
-  </Card>
+		</Skills>
+	</Card>
+	<Card>
+		<Name>River Crocolisk</Name>
+		<Attack>2</Attack>
+		<HP>3</HP>
+		<Manacost>2</Manacost>
+		<Tags>
+			<Minion/>
+		</Tags>
+	</Card>
+	<Card>
+		<Name>Dalaran Mage</Name>
+		<Attack>1</Attack>
+		<HP>4</HP>
+		<Manacost>3</Manacost>
+		<Tags>
+			<Minion/>
+			<Spell_Damage>1</Spell_Damage>
+		</Tags>
+	</Card>
+	<Card>
+		<Name>Ironforge Rifleman</Name>
+		<Attack>2</Attack>
+		<HP>2</HP>
+		<Manacost>3</Manacost>
+		<Tags>
+			<Minion/>
+		</Tags>
+		<Skills>
+			<Skill>
+				<Type>Battlecry</Type>
+				<Target>
+					<Tags>
+						<Any/>
+						<!--nothing means any... this specifies the set of possible targets-->
+					</Tags>
+				</Target>
+				<Effect>
+					<Function targets="1" value="1" selector="PLAYER">Deal_Damage</Function>
+				</Effect>
+			</Skill>
+		</Skills>
+	</Card>
+	<Card>
+		<Name>Ironfur Grizzly</Name>
+		<Attack>3</Attack>
+		<HP>3</HP>
+		<Manacost>3</Manacost>
+		<Tags>
+			<Minion/>
+			<Taunt/>
+		</Tags>
+	</Card>
+	<Card>
+		<Name>Magma Rager</Name>
+		<Attack>5</Attack>
+		<HP>1</HP>
+		<Manacost>3</Manacost>
+		<Tags>
+			<Minion/>
+		</Tags>
+	</Card>
+	<Card>
+		<Name>Raid Leader</Name>
+		<Attack>2</Attack>
+		<HP>2</HP>
+		<Manacost>3</Manacost>
+		<Tags>
+			<Minion/>
+		</Tags>
+		<Skills>
+			<Skill>
+				<Type>Aura</Type>
+				<Target>
+					<Tags>
+						<Minion/>
+						<Other/>
+						<Own/>
+					</Tags>
+				</Target>
+				<Effect>
+					<Function Attack="1" AttackModificationType="ADDITION">Give_Buff</Function>
+				</Effect>
+			</Skill>
+			<!--TODO-->
+		</Skills>
+	</Card>
+	<Card>
+		<Name>Razorfen Hunter</Name>
+		<Attack>2</Attack>
+		<HP>3</HP>
+		<Manacost>3</Manacost>
+		<Tags>
+			<Minion/>
+		</Tags>
+		<Skills>
+			<Skill>
+				<Type>Battlecry</Type>
+				<Target>
+					<Tags>
+						<You/>
+					</Tags>
+				</Target>
+				<Effect>
+					<Function summonedCreatureName="Boar">Summon</Function>
+				</Effect>
+			</Skill>
+			<!--TODO-->
+		</Skills>
+	</Card>
+	<Card>
+		<Name>Silverback Patriarch</Name>
+		<Attack>1</Attack>
+		<HP>4</HP>
+		<Manacost>3</Manacost>
+		<Tags>
+			<Minion/>
+			<Beast/>
+			<Taunt/>
+		</Tags>
+	</Card>
+	<Card>
+		<Name>Wolfrider</Name>
+		<Attack>3</Attack>
+		<HP>1</HP>
+		<Manacost>3</Manacost>
+		<Tags>
+			<Minion/>
+			<Charge/>
+		</Tags>
+	</Card>
+	<Card>
+		<Name>Chilwind Yeti</Name>
+		<Attack>4</Attack>
+		<HP>5</HP>
+		<Manacost>4</Manacost>
+		<Tags>
+			<Minion/>
+		</Tags>
+	</Card>
+	<Card>
+		<Name>Dragonling Mechanic</Name>
+		<Attack>2</Attack>
+		<HP>4</HP>
+		<Manacost>4</Manacost>
+		<Tags>
+			<Minion/>
+		</Tags>
+		<Skills>
+			<Skill>
+				<Type>Battlecry</Type>
+				<Target>
+					<Tags>
+						<You/>
+					</Tags>
+				</Target>
+				<Effect>
+					<Function summonedCreatureName="Mechanical Dragonling">Summon</Function>
+				</Effect>
+			</Skill>
+		</Skills>
+		<!--TODO-->
+	</Card>
+	<Card>
+		<Name>Gnomish Inventor</Name>
+		<Attack>2</Attack>
+		<HP>4</HP>
+		<Manacost>4</Manacost>
+		<Tags>
+			<Minion/>
+		</Tags>
+		<Skills>
+			<Skill>
+				<Type>Battlecry</Type>
+				<Target>
+					<Tags>
+						<You/>
+					</Tags>
+				</Target>
+				<Effect>
+					<Function value="1" selector="AUTO">Draw_Card</Function>
+				</Effect>
+			</Skill>
+		</Skills>
+		<!--TODO-->
+	</Card>
+	<Card>
+		<Name>Oasis Snapjaw</Name>
+		<Attack>2</Attack>
+		<HP>7</HP>
+		<Manacost>4</Manacost>
+		<Tags>
+			<Minion/>
+		</Tags>
+	</Card>
+	<Card>
+		<Name>Ogre Magi</Name>
+		<Attack>4</Attack>
+		<HP>4</HP>
+		<Manacost>4</Manacost>
+		<Tags>
+			<Minion/>
+			<Spell_Damage>1</Spell_Damage>
+		</Tags>
+	</Card>
+	<Card>
+		<Name>Sanjin Shieldmasta</Name>
+		<Attack>3</Attack>
+		<HP>5</HP>
+		<Manacost>4</Manacost>
+		<Tags>
+			<Minion/>
+			<Taunt/>
+		</Tags>
+	</Card>
+	<Card>
+		<Name>Stormwind Knight</Name>
+		<Attack>2</Attack>
+		<HP>5</HP>
+		<Manacost>4</Manacost>
+		<Tags>
+			<Minion/>
+			<Charge/>
+		</Tags>
+	</Card>
+	<Card>
+		<Name>Booty Bay Bodyguard</Name>
+		<Attack>5</Attack>
+		<HP>4</HP>
+		<Manacost>5</Manacost>
+		<Tags>
+			<Minion/>
+			<Taunt/>
+		</Tags>
+	</Card>
+	<Card>
+		<Name>Darkscale Healer</Name>
+		<Attack>4</Attack>
+		<HP>5</HP>
+		<Manacost>5</Manacost>
+		<Tags>
+			<Minion/>
+		</Tags>
+		<Skills><Skill>
+			<Type>Battlecry</Type>
+			<Target>
+				<Tags><Other/><Own/></Tags>
+			</Target>
+			<Effect>
+				<Function value="2"  targets="1" selector="ALL">Heal</Function>
+			</Effect>
+		</Skill></Skills>
+		<!--TODO-->
+	</Card>
+	<Card>
+		<Name>Frowstwolf Warlord</Name>
+		<Attack>4</Attack>
+		<HP>4</HP>
+		<Manacost>5</Manacost>
+		<Tags>
+			<Minion/>
+		</Tags>
+		<Skills>
+		<Skill>
+			<Type>Battlecry</Type>
+			<Target>
+				<Tags><Minion/><Other/><Own/></Tags>
+			</Target>
+			<Effect>
+				<Function>Count</Function>
+			</Effect>
+		</Skill>
+			<Skill>
+				<Type>Battlecry</Type>
+				<Target>
+					<Tags>
+						<Self/>
+						<!--nothing means any... this specifies the set of possible targets-->
+					</Tags>
+				</Target>
+				<Effect>
+					<Function  Attack="counted" AttackModificationType="ADDITION"  Defense="counted" DefenseModificationType="ADDITION" selector="AUTO">Give_Buff</Function>
+				</Effect>
+			</Skill>
+		</Skills>
+		<!--TODO-->
+	</Card>
+	<Card>
+		<Name>Garubashi Berseker</Name>
+		<Attack>2</Attack>
+		<HP>7</HP>
+		<Manacost>5</Manacost>
+		<Tags>
+			<Minion/>
+		</Tags>
+		<Skills>
+		<Skill>
+			<Type>Triggered</Type>
+			<Trigger>Self_Takes_Damage</Trigger>
+			<Target>
+				<Tags><Self/></Tags>
+			</Target>
+			<Effect>
+				<Function Attack="3" AttackModificationType="ADDITION" Defense="0" DefenseModificationType="ADDITION" selector="AUTO">Give_Buff</Function>
+			</Effect>
+		</Skill>
+		</Skills>
+		<!--TODO-->
+	</Card>
+	<Card>
+		<Name>Nightblade</Name>
+		<Attack>4</Attack>
+		<HP>4</HP>
+		<Manacost>5</Manacost>
+		<Tags>
+			<Minion/>
+		</Tags>
+		<Skills>
+			<Skill>
+				<Type>Battlecry</Type>
+				<Target>
+					<Tags>
+						<Enemy/>
+						<Player/>
+						<!--nothing means any... this specifies the set of possible targets-->
+					</Tags>
+				</Target>
+				<Effect>
+					<Function targets="1" value="3" selector="AUTO">Deal_Damage</Function>
+				</Effect>
+			</Skill>
+		</Skills>
+		<!--TODO-->
+	</Card>
+	<Card>
+		<Name>Stormspike Commando</Name>
+		<Attack>2</Attack>
+		<HP>4</HP>
+		<Manacost>5</Manacost>
+		<Tags>
+			<Minion/>
+		</Tags>
+		<Skills>
+			<Skill>
+				<Type>Battlecry</Type>
+				<Target>
+					<Tags>
+						<Any/>
+						<!--nothing means any... this specifies the set of possible targets-->
+					</Tags>
+				</Target>
+				<Effect>
+					<Function targets="1" value="2" selector="PLAYER">Deal_Damage</Function>
+				</Effect>
+			</Skill>
+		</Skills>
+	</Card>
+	<Card>
+		<Name>Archmage</Name>
+		<Attack>4</Attack>
+		<HP>7</HP>
+		<Manacost>6</Manacost>
+		<Tags>
+			<Minion/>
+			<Spell_Damage>1</Spell_Damage>
+		</Tags>
+	</Card>
+	<Card>
+		<Name>Boulderfist Ogre</Name>
+		<Attack>6</Attack>
+		<HP>7</HP>
+		<Manacost>6</Manacost>
+		<Tags>
+			<Minion/>
+		</Tags>
+	</Card>
+	<Card>
+		<Name>Reckless Rocketeer</Name>
+		<Attack>5</Attack>
+		<HP>2</HP>
+		<Manacost>6</Manacost>
+		<Tags>
+			<Minion/>
+			<Charge/>
+		</Tags>
+	</Card>
+	<Card>
+		<Name>Core Hound</Name>
+		<Attack>9</Attack>
+		<HP>5</HP>
+		<Manacost>7</Manacost>
+		<Tags>
+			<Minion/>
+			<Beast/>
+		</Tags>
+	</Card>
+	<Card>
+		<Name>Stormwind Champion</Name>
+		<Attack>6</Attack>
+		<HP>6</HP>
+		<Manacost>7</Manacost>
+		<Tags>
+			<Minion/>
+		</Tags>
+		<Skills>
+			<Skill>
+				<Type>Aura</Type>
+				<!--Aura works in following way: game watches for any manipulation with cards, when such happens, if said card did not have aura buff already, it is given one. If the Aura Provider dies, all auras are removed.-->
+				<Target>
+					<Tags>
+						<Minion/>
+						<Other/>
+						<Own/>
+					</Tags>
+				</Target>
+				<Effect>
+					<Function Attack="1" AttackModificationType="ADDITION" Defense="1" DefenseModificationType="ADDITION" selector="AUTO">Give_Buff</Function>
+				</Effect>
+			</Skill>
+		</Skills>
+		<!--TODO-->
+	</Card>
+	<Card>
+		<Name>War Golem</Name>
+		<Attack>7</Attack>
+		<HP>7</HP>
+		<Manacost>7</Manacost>
+		<Tags>
+			<Minion/>
+		</Tags>
+	</Card>
 </Cards>
