@@ -106,6 +106,10 @@ namespace Hearthstone
                 }
             }
         }
+        public void Heal(int ammount, Card Target, GameRepresentation Game)
+        {
+            //todo
+        }
         public void AuraTigger(GameRepresentation Game)
         {
             foreach (Abbility aura in Game.ActiveAuras)
@@ -242,7 +246,7 @@ namespace Hearthstone
                 Console.WriteLine(outString);
             }
         }
-        private void DrawCard(int TargetPlayer, GameRepresentation Game)
+        public void DrawCard(int TargetPlayer, GameRepresentation Game)
         {
             //handle card drawing listeners
             if (Game.Decks[TargetPlayer].Count >= 1)
@@ -499,6 +503,31 @@ namespace Hearthstone
             }
 
             return passed;
+        }
+        public Card GetSelectedTarget(GameRepresentation Game)
+        {
+            return Game.TargetForSomething;
+        }
+        
+        public List<Card> Get_Targets(List<string> TargetTags,Card OriginCard, GameRepresentation Game)
+        {
+            List<Card> targets = new List<Card>();
+            for (int i = 0; i < 2; i++)
+            {
+                foreach (Card possibleTarget in Game.Fields[i])
+                {
+                    if (CheckTagsForValidity(TargetTags, possibleTarget, OriginCard, Game))
+                    {
+                        targets.Add(possibleTarget);
+                    }
+                }
+                if (CheckTagsForValidity(TargetTags, Game.Players[i], OriginCard, Game))
+                {
+                    targets.Add(Game.Players[i]);
+                }
+            }
+
+            return targets;
         }
         public List<Card> Get_Targets(Abbility abb, GameRepresentation Game)
         {

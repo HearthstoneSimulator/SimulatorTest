@@ -210,8 +210,11 @@ namespace Hearthstone
         public List<Abbility> Skills = new List<Abbility>();
         public int fatigue = 0;
         public List<Abbility> Auras = new List<Abbility>();
+        public int owner;
+        public int controller;
         public enum Target { SINGLE, NONE };
         public Target target;
+        public int tmpCount = 0;
         public Card(int i)
         {
             this.name = "dummy " + i;
@@ -360,6 +363,8 @@ namespace Hearthstone
        public List<bool> isThisPlayerAi = new List<bool>();
        public List<AI> AIs = new List<AI>();
        public List<GenericAI> Inteligences = new List<GenericAI>();
+
+
     }
 
     class GameEngine 
@@ -649,6 +654,23 @@ namespace Hearthstone
 
                     }
                     break;
+                case "Draw_Card":
+                    if (efekt.Attribute("selector").Value == "AUTO")
+                    {
+                        for (int i = 0; i < Convert.ToInt32(efekt.Attribute("value").Value); i++)
+                        {
+                            //that many cards to draw
+                            if (UsedAbbility.TargetTags.Contains("You"))
+                            {
+                                DrawCard(Game.CurrentPlayer);
+                            }
+                            if (UsedAbbility.TargetTags.Contains("Opponent"))
+                            {
+                                DrawCard(GetOtherPlayer(Game.CurrentPlayer));
+                            }
+                        }
+                    }
+                    break;
                 default:
                     break;
             }
@@ -823,6 +845,8 @@ namespace Hearthstone
 
             Game.Hand1.Add(Game.AllCards[1].Clone());
             Game.Hand1.Add(Game.AllCards[1].Clone());
+            Game.Hand1.Add(Game.AllCards[13].Clone());
+            Game.Hand1.Add(Game.AllCards[13].Clone());
             GetSelectableCards();
         }
         private void StartGameCycle()
