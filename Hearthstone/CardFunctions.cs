@@ -6,21 +6,23 @@ using System.Threading.Tasks;
 
 namespace Hearthstone
 {
-    abstract class CardFunctions 
+    public abstract class CardFunctions 
     {
         public List<string> TargetTags;
         public Card AssociatedCard;
 
         abstract public void Perform(GameEngineFunctions engine, GameRepresentation Game);
     }
-    class DrawCard : CardFunctions
+    public class DrawCard : CardFunctions
     {
         public int ammountOfCards;
-        public DrawCard(int ammountOfCards, List<string> targets, Card AssociatedCard)
+        public string Selector;
+        public DrawCard(int ammountOfCards, List<string> targets, string Selector, Card AssociatedCard)
         {
             this.TargetTags = targets;
             this.ammountOfCards = ammountOfCards;
             this.AssociatedCard = AssociatedCard;
+            this.Selector = Selector;
         }
         public override void Perform(GameEngineFunctions engine, GameRepresentation Game)
         {
@@ -40,7 +42,7 @@ namespace Hearthstone
             }
         }
     }
-    class CountEntities : CardFunctions
+    public class CountEntities : CardFunctions
     {
         public CountEntities(List<string> TargetTags, Card AssociatedCard)
         {
@@ -53,7 +55,7 @@ namespace Hearthstone
             AssociatedCard.tmpCount = engine.Get_Targets(TargetTags, AssociatedCard, Game).Count;
         }
     }
-    class GiveBuff : CardFunctions 
+    public class GiveBuff : CardFunctions 
     {
 
         public override void Perform(GameEngineFunctions engine, GameRepresentation Game)
@@ -61,20 +63,93 @@ namespace Hearthstone
             throw new NotImplementedException();
         }
     }
-    class Heal : CardFunctions
+    public class Heal : CardFunctions
     {
-        public int ammount;
+        public int amount;
+        public int targetCount;
+        public string selector;
+       
+        public Heal (Card AssociatedCard, List<string> TargetTags ,int Amount, string Selector, int Targets )
+        {
+            this.AssociatedCard = AssociatedCard;
+            this.amount = Amount;
+            this.selector = Selector;
+            this.targetCount = Targets;
+            this.TargetTags = TargetTags;
+        }
         public override void Perform(GameEngineFunctions engine, GameRepresentation Game)
         {
+            if (true)
+            {
+
+            }
             //TODO
         }
     }
-    class DealDamage : CardFunctions
+    public class DealDamage : CardFunctions
     {
+        int Value;
+        int TargetCount;
+        string Selector;
 
+        public DealDamage(int value, int targets, string selector, Card AssociatedCard, List<string> targetTags )
+        {
+            this.AssociatedCard = AssociatedCard;
+            this.Value = value;
+            this.TargetCount = targets;
+            this.Selector = selector;
+            this.TargetTags = targetTags;
+        }
         public override void Perform(GameEngineFunctions engine, GameRepresentation Game)
         {
-            throw new NotImplementedException();
+            switch (Selector)
+            {
+                case "PLAYER":
+                    List<Card> tmpTarget = new List<Card>();
+                    tmpTarget.Add(Game.TargetForSomething);
+                    engine.DealDamage(Game.TargetForSomething, Value, Game);
+                    break;
+                case "ALL":
+                    foreach (Card validTarget in engine.Get_Targets(TargetTags,AssociatedCard,Game))
+                    {
+                        engine.DealDamage(validTarget, Value, Game);
+                    }
+                    
+                    break;
+                case "AUTO":
+                    foreach (Card validTarget in engine.Get_Targets(TargetTags, AssociatedCard, Game))
+                    {
+                        engine.DealDamage(validTarget, Value, Game);
+                    }
+                    break;
+
+                default:
+                    //includes RANDOM, which is not used in current card set
+                    //should not happen
+                    break;
+            }
+        }
+    }
+    public class Summon : CardFunctions
+    {
+        string MonsterToSummon;
+        public Summon(string SummonedMonster,Card AssociatedCard, List<string> TargetTags)
+        {
+            MonsterToSummon = SummonedMonster;
+            this.AssociatedCard = AssociatedCard;
+            this.TargetTags = TargetTags;
+        }
+        public override void Perform(GameEngineFunctions engine, GameRepresentation Game)
+        {
+            if (TargetTags.Contains("You"))
+            {
+                engine.SummonMonster(MonsterToSummon, Game.CurrentPlayer, Game);
+
+            }
+            if (TargetTags.Contains("Enemy"))
+            {
+                engine.SummonMonster(MonsterToSummon, engine.GetOtherPlayer(Game.CurrentPlayer), Game);
+            }
         }
     }
 

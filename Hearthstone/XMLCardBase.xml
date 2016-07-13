@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Cards xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="C:/Users/Marin/Documents/Visual Studio 2013/Projects/Hearthstone/XMLCardBase.xsd">
+<Cards xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="C:\Users\Martin\Source\Repos\SimulatorTest\Hearthstone\bin\Debug/XMLCardBase.xsd">
   <Card>
     <Name>Chillwind Yeti</Name>
     <Attack>4</Attack>

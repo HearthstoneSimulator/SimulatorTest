@@ -16,3 +16,21 @@ C:\Users\Marin\Documents\Visual Studio 2013\Projects\Hearthstone\Hearthstone\obj
 C:\Users\Marin\Documents\Visual Studio 2013\Projects\Hearthstone\Hearthstone\obj\Debug\Hearthstone_MarkupCompile.lref
 C:\Users\Marin\Documents\Visual Studio 2013\Projects\Hearthstone\Hearthstone\obj\Debug\GeneratedInternalTypeHelper.g.cs
 C:\Users\Marin\Documents\Visual Studio 2013\Projects\Hearthstone\Hearthstone\obj\Debug\App.baml
+C:\Users\Martin\Source\Repos\SimulatorTest\Hearthstone\bin\Debug\Hearthstone.exe.config
+C:\Users\Martin\Source\Repos\SimulatorTest\Hearthstone\obj\Debug\Hearthstone.exe
+C:\Users\Martin\Source\Repos\SimulatorTest\Hearthstone\obj\Debug\Hearthstone.pdb
+C:\Users\Martin\Source\Repos\SimulatorTest\Hearthstone\bin\Debug\Hearthstone.exe
+C:\Users\Martin\Source\Repos\SimulatorTest\Hearthstone\bin\Debug\Hearthstone.pdb
+C:\Users\Martin\Source\Repos\SimulatorTest\Hearthstone\obj\Debug\Hearthstone.csprojResolveAssemblyReference.cache
+C:\Users\Martin\Source\Repos\SimulatorTest\Hearthstone\obj\Debug\MainWindow.baml
+C:\Users\Martin\Source\Repos\SimulatorTest\Hearthstone\obj\Debug\MainWindow.g.cs
+C:\Users\Martin\Source\Repos\SimulatorTest\Hearthstone\obj\Debug\SimulationWindow.g.cs
+C:\Users\Martin\Source\Repos\SimulatorTest\Hearthstone\obj\Debug\App.g.cs
+C:\Users\Martin\Source\Repos\SimulatorTest\Hearthstone\obj\Debug\GeneratedInternalTypeHelper.g.cs
+C:\Users\Martin\Source\Repos\SimulatorTest\Hearthstone\obj\Debug\Hearthstone_MarkupCompile.cache
+C:\Users\Martin\Source\Repos\SimulatorTest\Hearthstone\obj\Debug\Hearthstone_MarkupCompile.lref
+C:\Users\Martin\Source\Repos\SimulatorTest\Hearthstone\obj\Debug\App.baml
+C:\Users\Martin\Source\Repos\SimulatorTest\Hearthstone\obj\Debug\SimulationWindow.baml
+C:\Users\Martin\Source\Repos\SimulatorTest\Hearthstone\obj\Debug\Hearthstone.g.resources
+C:\Users\Martin\Source\Repos\SimulatorTest\Hearthstone\obj\Debug\Hearthstone.Properties.Resources.resources
+C:\Users\Martin\Source\Repos\SimulatorTest\Hearthstone\obj\Debug\Hearthstone.csproj.GenerateResource.Cache

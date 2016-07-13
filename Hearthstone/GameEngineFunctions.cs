@@ -761,6 +761,17 @@ namespace Hearthstone
             return ValidTargets;
         }
 
-
+        public void SummonMonster(string MonsterName,int WhichPlayerSummons, GameRepresentation Game)
+        {
+            //TODO: Trigger "MonsterSummoned"
+            foreach (Card mbysummon in Game.AllCards)
+            {
+                if (mbysummon.ToString() == MonsterName)
+                {
+                    Game.Fields[WhichPlayerSummons].Add(mbysummon.Clone());
+                    break;
+                }
+            }
+        }
     }
 }

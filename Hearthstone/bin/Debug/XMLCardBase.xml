@@ -241,6 +241,13 @@
       </Battlecry>-->
 		</Skills>
 	</Card>
+  <Card>
+    <Name>Murloc Scout</Name>
+    <Attack>1</Attack>
+    <HP>1</HP>
+    <Manacost>1</Manacost>
+    <Tags><Minion/><Murloc/></Tags>
+  </Card>
 	<Card>
 		<Name>Novice Engineer</Name>
 		<Attack>1</Attack>

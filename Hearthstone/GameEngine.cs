@@ -187,7 +187,10 @@ namespace Hearthstone
             return new AIAction(0);
         }
     }
-   
+   public enum Triggers
+    {
+        DamageTaken,MonsterPlayed
+    }
 
     public class Card
     {
@@ -272,33 +275,60 @@ namespace Hearthstone
 
     public class Abbility
     {
+        //Kind determines keyword specification of the Abbility (Skill) of the Minion / Spell
+        //There are currently following types: Battlecry, Triggered, Aura
         public string Kind;
+        //Which Card owns this specific abbility
         public Card Owner;
-        public List<string> TargetTags;
-        public List<Tags> TargetTags2;
-        public List<XElement> Effects;
+        //Flavor text that should be displayed on the Card - allows better merging of more effect together
         public string description;
-        public Abbility(String Kind )
+        //List of triggers that triger the Abbility
+        public List<Triggers> AbbilityTriggers;
+
+        public GameEngineFunctions engine;
+        public GameRepresentation Game;
+        //Constructor
+        public Abbility(String Kind, GameEngineFunctions Engine, GameRepresentation Game )
         {
             this.Kind = Kind;
             this.TargetTags = new List<string>();
+            this.Functions = new List<CardFunctions>();
+            this.engine = Engine;
+            this.Game = Game;
+            this.AbbilityTriggers = new List<Triggers>();
+
             this.TargetTags2 = new List<Tags>();
             this.Effects = new List<XElement>();
         }
+        //This should perform the Abbility of the card and all its effects
         public void Perform(Card PossibleTarget)
         {
-            foreach (XElement effect in Effects)
+            foreach (CardFunctions Function in Functions)
+            {
+                Function.Perform(engine, Game);
+            }
+
+           /* foreach (XElement effect in Effects)
             {
                 switch (effect.Value)
                 {
                     case "Deal_Damage":
                         
                         break;
+                    case "Heal":
+
+                        break;
                     default:
                         break;
                 }
-            }
+            }*/
         }
+
+        public List<CardFunctions> Functions;
+        public List<string> TargetTags;
+        public List<Tags> TargetTags2;
+        public List<XElement> Effects;
+
         public List<Card> GetTargets()
         {
             return null;
@@ -706,7 +736,7 @@ namespace Hearthstone
                 }
             }
         }
-        
+        /*
         public Abbility ParseAbbility(XElement Abbilityxml)
         {
              Abbility ab = new Abbility(Abbilityxml.Element("Type").Value);
@@ -719,7 +749,7 @@ namespace Hearthstone
                  ab.Effects.Add(effect);
              }
             return ab;
-        }
+        }*/
         public List<Card> Get_Targets(Abbility abb)
         {
             List<Card> targets = new List<Card>();
@@ -743,6 +773,10 @@ namespace Hearthstone
         public void InitialiseGame()
         {
             Game  = new GameRepresentation();
+            CardLoader Loader = new CardLoader(Game);
+            Loader.LoadCards("XMLCardBase.xml");
+            #region OldLoad
+            /*
             Xdoc = XDocument.Load("XMLCardBase.xml");
             var rawCards = from cr in Xdoc.Descendants("Card") select cr;
             //card loading
@@ -783,7 +817,8 @@ namespace Hearthstone
                 //Add the card to the Card Database
                 Game.AllCards.Add(newcard);
             }
-
+            */
+            #endregion
             //Creating decks and setting up the game itself
             for (int i = 0; i < 2; i++)
             {
@@ -1078,8 +1113,8 @@ namespace Hearthstone
             {
                 if (ski.Kind == "Battlecry")
                 {
-                    PerformAbbility(SelectedCard, ski, Game.TargetForSomething);
-
+                    //PerformAbbility(SelectedCard, ski, Game.TargetForSomething);
+                    ski.Perform(Game.TargetForSomething);
                 }
             }
         }
