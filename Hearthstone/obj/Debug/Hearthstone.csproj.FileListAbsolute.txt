@@ -34,3 +34,5 @@ C:\Users\Martin\Source\Repos\SimulatorTest\Hearthstone\obj\Debug\SimulationWindo
 C:\Users\Martin\Source\Repos\SimulatorTest\Hearthstone\obj\Debug\Hearthstone.g.resources
 C:\Users\Martin\Source\Repos\SimulatorTest\Hearthstone\obj\Debug\Hearthstone.Properties.Resources.resources
 C:\Users\Martin\Source\Repos\SimulatorTest\Hearthstone\obj\Debug\Hearthstone.csproj.GenerateResource.Cache
+C:\Users\Martin\Source\Repos\SimulatorTest\Hearthstone\bin\Debug\GameIntestines.dll
+C:\Users\Martin\Source\Repos\SimulatorTest\Hearthstone\bin\Debug\GameIntestines.pdb

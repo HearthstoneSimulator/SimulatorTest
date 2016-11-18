@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
 
-namespace Hearthstone 
+namespace GameIntestines
 {
     public enum Tags
     {
@@ -434,7 +434,7 @@ namespace Hearthstone
 
     }
 
-    class GameEngine 
+    public class GameEngine 
     {
         XDocument Xdoc;
         GameRepresentation Game;

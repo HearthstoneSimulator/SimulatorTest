@@ -1,0 +1,5 @@
+C:\Users\Martin\Source\Repos\SimulatorTest\GameIntestines\bin\Debug\GameIntestines.dll
+C:\Users\Martin\Source\Repos\SimulatorTest\GameIntestines\bin\Debug\GameIntestines.pdb
+C:\Users\Martin\Source\Repos\SimulatorTest\GameIntestines\obj\Debug\GameIntestines.csprojResolveAssemblyReference.cache
+C:\Users\Martin\Source\Repos\SimulatorTest\GameIntestines\obj\Debug\GameIntestines.dll
+C:\Users\Martin\Source\Repos\SimulatorTest\GameIntestines\obj\Debug\GameIntestines.pdb
