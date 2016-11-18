@@ -194,12 +194,19 @@ namespace Hearthstone
 
     public class Card
     {
-
+        public bool TemplateInstance = false;
         public string name; //jméno karty a zároveň identifikátor
         public int baseattack;
         public int basehitpoints;
         public int currentattack;
         public int currenthitpoints;
+        public int defaultHP;
+        public int defaultAttack;
+        public int defaultSpelldmg ;
+        public int currentSpelldmg ;
+        public int frozen;
+        public bool needsTargetSelected;
+
         public int armor;
         public CardType typkarty;
         public bool divineshield;
@@ -213,6 +220,7 @@ namespace Hearthstone
         public List<Abbility> Skills = new List<Abbility>();
         public int fatigue = 0;
         public List<Abbility> Auras = new List<Abbility>();
+        public List<StatBuffWrapper> ListOfStatBuffs = new List<StatBuffWrapper>();
         public int owner;
         public int controller;
         public enum Target { SINGLE, NONE };
@@ -242,6 +250,12 @@ namespace Hearthstone
         public Card Clone()
         {
             Card cc = new Card();
+            cc.defaultAttack = this.defaultAttack;
+            cc.needsTargetSelected = this.needsTargetSelected;
+            cc.defaultSpelldmg = this.defaultSpelldmg;
+            cc.currentSpelldmg = this.currentSpelldmg;
+            cc.frozen = this.frozen;
+            cc.defaultHP = this.defaultHP;
             cc.armor = this.armor;
             cc.AttackedXTimes = this.AttackedXTimes;
            // cc.Auras = this.Auras;
@@ -254,14 +268,21 @@ namespace Hearthstone
             cc.invulnerable = this.invulnerable;
             cc.manacost = this.manacost;
             cc.name = this.name;
-            cc.Skills = this.Skills;
+            //cc.Skills = this.Skills;
+            foreach (Abbility abb in this.Skills)
+            {
+                cc.Skills.Add(abb.Clone());
+            }
            // cc.tags = this.tags;
             cc.turnsingame = this.turnsingame;
             foreach (string  tag in this.tags)
             {
                 cc.tags.Add(tag);
             }
-
+            foreach (Abbility abb in cc.Skills)
+            {
+                abb.Owner = cc;
+            }
             return cc;
         }
 
@@ -284,9 +305,20 @@ namespace Hearthstone
         public string description;
         //List of triggers that triger the Abbility
         public List<Triggers> AbbilityTriggers;
-
+        public string Trigger;
         public GameEngineFunctions engine;
         public GameRepresentation Game;
+        public Abbility Clone()
+        {
+            Abbility outone = new Abbility(this.Kind, this.engine, this.Game);
+            foreach (CardFunctions fnc in this.Functions)
+            {
+                outone.Functions.Add(fnc.Clone());
+            }
+            outone.TargetTags = new List<string>( this.TargetTags);
+            outone.Trigger = this.Trigger;
+            return outone;
+        }
         //Constructor
         public Abbility(String Kind, GameEngineFunctions Engine, GameRepresentation Game )
         {
@@ -305,7 +337,7 @@ namespace Hearthstone
         {
             foreach (CardFunctions Function in Functions)
             {
-                Function.Perform(engine, Game);
+                Function.Perform(engine, Game, this.Owner);
             }
 
            /* foreach (XElement effect in Effects)
@@ -393,7 +425,12 @@ namespace Hearthstone
        public List<bool> isThisPlayerAi = new List<bool>();
        public List<AI> AIs = new List<AI>();
        public List<GenericAI> Inteligences = new List<GenericAI>();
-
+        public bool EndTheGame;
+        public int TimeOfTheTurn =0;
+        public int MaxTimeForTurn =1;
+        public List<int> FastSpellDamage = new List<int>();
+        public Card EvulEngine;
+        public List<int> HeroPowerUsages = new List<int>();
 
     }
 
@@ -401,7 +438,10 @@ namespace Hearthstone
     {
         XDocument Xdoc;
         GameRepresentation Game;
+        GameEngineFunctions Engine;
+        Stack<GenericAction> StackOfThingsToDo;
         public event EventHandler ManaChanged;
+        public GenericAction PlayersAction;
         public int mana = 0;
        // int iter = 1;
 
@@ -480,38 +520,67 @@ namespace Hearthstone
                     return Game.Manapool[1].ToString();
                 }
             }
-        }/*
-        public int P1MaxMana
+        }
+        public string P1Hitpoints
         {
-            get { return Game.ManaP1.max(); }
-            internal set
+            get
             {
-                Game.ManaP1.setMax(value);
-                if (ManaChanged != null)
-                    ManaChanged(this, new EventArgs());
+                if (Game == null || Game.Players[0] == null)
+                {
+                    return "Error";
+                }
+                else
+                {
+                    return Game.Players[0].currenthitpoints.ToString() + " / " + Game.Players[0].basehitpoints.ToString();
+                }
             }
         }
-
-        public int ToDisplay
+        public string P2Hitpoints
         {
-            get { return mana; }
-
-            internal set
+            get
             {
-                mana = value;
-
-                if (ManaChanged != null)
-                    ManaChanged(this, new EventArgs());
+                if (Game == null || Game.Players[1] == null)
+                {
+                    return "Error";
+                }
+                else
+                {
+                    return Game.Players[1].currenthitpoints.ToString() + " / " + Game.Players[1].basehitpoints.ToString();
+                }
             }
         }
-        public void increasemana()
-        {
-           // mana = iter.ToString();
-            mana++;
-            ToDisplay = mana;
-            //iter++;
-        }
-        */
+        /*
+       public int P1MaxMana
+       {
+           get { return Game.ManaP1.max(); }
+           internal set
+           {
+               Game.ManaP1.setMax(value);
+               if (ManaChanged != null)
+                   ManaChanged(this, new EventArgs());
+           }
+       }
+
+       public int ToDisplay
+       {
+           get { return mana; }
+
+           internal set
+           {
+               mana = value;
+
+               if (ManaChanged != null)
+                   ManaChanged(this, new EventArgs());
+           }
+       }
+       public void increasemana()
+       {
+          // mana = iter.ToString();
+           mana++;
+           ToDisplay = mana;
+           //iter++;
+       }
+       */
         bool end = false;
         public bool CheckTagForValidity(string tag, Card Target, Card Origin)
         {
@@ -773,7 +842,12 @@ namespace Hearthstone
         public void InitialiseGame()
         {
             Game  = new GameRepresentation();
-            CardLoader Loader = new CardLoader(Game);
+            Engine = new GameEngineFunctions();
+
+            Game.EvulEngine = new Card();
+            Game.EvulEngine.name = "Engine";
+            CardLoader Loader = new CardLoader(Engine, Game);
+            
             Loader.LoadCards("XMLCardBase.xml");
             #region OldLoad
             /*
@@ -827,7 +901,9 @@ namespace Hearthstone
                 Game.Decks.Add(new ObservableCollection<Card>());
                 Game.Fields.Add(new ObservableCollection<Card>());
                 Game.Players.Add(new Card());
-                
+
+                Game.FastSpellDamage.Add(0);
+                Game.FastSpellDamage.Add(0);
                 Game.Players[i].basehitpoints = 30;
                 Game.Players[i].currenthitpoints = 30;
                 Game.Players[i].tags.Add("Player");
@@ -840,7 +916,9 @@ namespace Hearthstone
                 Game.Hand2 = Game.Hands[1];
                 Game.Deck1 = Game.Decks[0];
                 Game.Deck2 = Game.Decks[1];
-            Random rng = new Random(1);
+//            Random rng = new Random(1);
+            Random rng = new Random();
+
             //Make decks
             for (int i = 0; i < 30; i++)
             {
@@ -866,29 +944,73 @@ namespace Hearthstone
                 Game.Hand2.Add(Game.Deck2[0]);
                 Game.Deck2.RemoveAt(0);
             }
+            //initalise hero powers
+            for (int i = 0; i < 2; i++)
+            {
+                Game.HeroPowerUsages.Add(0);
+            }
             //Determine starting player (and give the opponent the coin)
             Game.ActivePlayer = true; // I am the active player
-            Game.isThisPlayerAi.Add(false);
+            Game.isThisPlayerAi.Add(false);// true); //false
             Game.isThisPlayerAi.Add(true);
-            Game.AIs.Add(null);
+            Game.AIs.Add(null); //null
             Game.AIs.Add( new AI());
-            Game.Inteligences.Add(null);
+            Game.Inteligences.Add( new MyCustomAI()); //null
             Game.Inteligences.Add(new MyCustomAI());
             //Start the game
-            IncreaseMana(Game.CurrentPlayer);
-            DrawCard(Game.CurrentPlayer);
 
-            Game.Hand1.Add(Game.AllCards[1].Clone());
-            Game.Hand1.Add(Game.AllCards[1].Clone());
-            Game.Hand1.Add(Game.AllCards[13].Clone());
-            Game.Hand1.Add(Game.AllCards[13].Clone());
-            GetSelectableCards();
+            //IncreaseMana(Game.CurrentPlayer);
+            //  DrawCard(Game.CurrentPlayer);
+            
+            Game.Fields[1].Add(Game.AllCards[27].Clone());
+            Game.Hand1.Add(Game.AllCards[76].Clone());
+            Game.Hand1.Add(Game.AllCards[76].Clone());
+            Game.Hand1.Add(Game.AllCards[0].Clone());
+            Game.Hand1.Add(Game.AllCards[4].Clone());
+            Game.Hand1.Add(Game.AllCards[76].Clone());
+            Game.Hand1.Add(Game.AllCards[32].Clone());
+            //  Engine.GetSelectableCards(Game);
+            //    Engine.test(Game);
+            Engine.InitialiseTurn(Game);
+        }
+        public void StartOneGame()
+        {
+            while (!Game.EndTheGame)
+            {
+                InitialiseTurn();
+
+                if (Game.isThisPlayerAi[Game.CurrentPlayer])
+                {
+                    //we are dealing with an AI player
+                    GenericAction ActionToPerform = Game.Inteligences[Game.CurrentPlayer].getAction(Game);
+                    ActionToPerform.Perform(Engine, Game);
+                    StackOfThingsToDo.Pop().Perform(Engine,Game);
+                }
+                else
+                {
+                    //the player is human
+                    //TODO
+                    while (PlayersAction == null && Game.TimeOfTheTurn <= Game.MaxTimeForTurn )
+                    {
+                        //waiting
+                    }
+                    if (PlayersAction != null)
+                    {
+                        PlayersAction.Perform(Engine, Game);
+                    }
+                    else
+                    {
+                        Engine.EndTurn(Game);
+                    }
+                        PlayersAction = null;
+                }
+            }
         }
         private void StartGameCycle()
         {
             while (true)
             {
-                Game.Inteligences[Game.CurrentPlayer].getAction(Game).Perform(Game);
+                Game.Inteligences[Game.CurrentPlayer].getAction(Game).Perform(Engine,Game);
                 /*
                 if (Game.isThisPlayerAi[Game.CurrentPlayer])
                 {
@@ -933,8 +1055,10 @@ namespace Hearthstone
         public void EndTurn()
         {
             //Game.CurrentPlayer = Game.CurrentPlayer + 1 - Game.CurrentPlayer*2;
-            Game.CurrentPlayer = GetOtherPlayer(Game.CurrentPlayer);
-            InitialiseTurn();
+
+            Engine.EndTurn(Game);
+            /*Game.CurrentPlayer = GetOtherPlayer(Game.CurrentPlayer);
+            InitialiseTurn();*/
         }
         public void ResetMonsterAttacks()
         {
@@ -975,13 +1099,14 @@ namespace Hearthstone
                 bool shouldEndTurn = false;
                 while (!shouldEndTurn)
                 {
-                    Game.Inteligences[Game.CurrentPlayer].getAction(Game).Perform(Game);
+                    Game.Inteligences[Game.CurrentPlayer].getAction(Game).Perform(Engine,Game);
                     if (Game.CurrentPlayer != oldplayer)
                     {
                         shouldEndTurn = true;
                     }
                 }
             }
+            #region stuff
             /*
             if (Game.isThisPlayerAi[Game.CurrentPlayer])
             {
@@ -1016,6 +1141,7 @@ namespace Hearthstone
                 }
                 
             }*/
+            #endregion
         }
         public void IncreaseMonsterTurns()
         {
@@ -1132,6 +1258,9 @@ namespace Hearthstone
         }
         public void PlayMonsterFromHand(Card SelectedCard)
         {
+            //bool asdf = object.ReferenceEquals(SelectedCard, Game.Hands[0][7]);
+            Engine.PlayMonsterFromHand(SelectedCard, Game);
+            /*
             //now I need to find out which card I selected - it is some card from active player -> can find if it is from hand or from table
             if (Game.Hands[Game.CurrentPlayer].Contains(SelectedCard))
             {
@@ -1162,7 +1291,7 @@ namespace Hearthstone
                 }
 
             }
-            GetSelectableCards();
+            GetSelectableCards();*/
         }
         public void DealDamage(List<Card> Target, int ammount)
         {
@@ -1278,7 +1407,7 @@ namespace Hearthstone
                 }
             }
         }
-        public void PlayGame()
+   /*     public void PlayGame()
         {
             while (!end)
             {
@@ -1301,16 +1430,19 @@ namespace Hearthstone
 
                 break;
             }
-        }
+        }*/
         public void SelectSecondaryTarget(Card SelectedCard)
         {
+            Engine.SelectSecondaryTarget(SelectedCard, Game);
+            /*
             if (Game.ValidTargetsP.Contains(SelectedCard))
             {
                 Game.TargetForSomething = SelectedCard;
-            }
+            }*/
         }
         public void SelectCardFromHand(Card SelectedCard)
         {
+            /*
             Game.ValidTargetsP.Clear();
             //now I need to find out which card I selected - it is some card from active player -> can find if it is from hand or from table
             if (Game.Hands[Game.CurrentPlayer].Contains(SelectedCard))
@@ -1351,11 +1483,12 @@ namespace Hearthstone
                 }
                 //GetValidTargets(SelectedCard) ;
             }
-
+*/
+            Engine.SelectCardFromHand(SelectedCard, Game);
             if (ManaChanged != null)
                 ManaChanged(this, new EventArgs());
         }
-
+        
         
     }
 }

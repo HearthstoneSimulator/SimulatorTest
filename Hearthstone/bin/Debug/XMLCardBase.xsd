@@ -7,6 +7,15 @@
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
+  <xs:complexType name="SpellCardT">
+    <xs:sequence>
+      <xs:element name="Name" type="xs:string" minOccurs="1" maxOccurs="1"/>
+      <xs:element name="Manacost" type="xs:integer" minOccurs="1" maxOccurs="1"/>
+      <xs:element name="Tags" type="TagsT" minOccurs="0" maxOccurs="1"/>
+      <xs:element name="Skills" type="SkillsT" minOccurs="0"/>
+      <xs:element name="TargetNeeded" type="TargetableT" default="NO"/>
+    </xs:sequence>
+  </xs:complexType>
 	<xs:complexType name="CardT">
 		<xs:sequence>
 			<xs:element name="Name" type="xs:string" minOccurs="1" maxOccurs="1"/>
@@ -15,8 +24,16 @@
 			<xs:element name="Manacost" type="xs:integer" minOccurs="1" maxOccurs="1"/>
 			<xs:element name="Tags" type="TagsT" minOccurs="0" maxOccurs="1"/>
 			<xs:element name="Skills" type="SkillsT" minOccurs="0"/>
+      <xs:element name="TargetNeeded" type="TargetableT" default="NO" minOccurs ="0"/>
+      <xs:element name="Targetable" type="TargetableT" default="NO" minOccurs="0"/> <!--targetable means if player can chose a target for the card-->
 		</xs:sequence>
 	</xs:complexType>
+  <xs:simpleType name="TargetableT">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="YES"/>
+      <xs:enumeration value="NO"/>
+    </xs:restriction>
+  </xs:simpleType>
 	<xs:complexType name="TagsT">
 		<xs:sequence>
 			<xs:element name="Minion" minOccurs="0"/>
@@ -41,6 +58,9 @@
 			<xs:element name="Any" minOccurs="0"/>
 			<xs:element name="Self" minOccurs="0"/>
 			<xs:element name="You" minOccurs="0"/>
+      <xs:element name="Adjecent" minOccurs="0"/>
+      <xs:element name="NonTargetable" minOccurs="0"/>
+      <xs:element name="UniqueInstance" minOccurs="0"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="SkillsT">
@@ -50,7 +70,7 @@
 	</xs:complexType>
 	<xs:complexType name="EffectT">
 		<xs:sequence>
-			<xs:element name="Function">
+			<xs:element name="Function" maxOccurs="unbounded">
 				<xs:complexType mixed="true">
 					<xs:attribute name="Attack" type="xs:string"/>
 					<xs:attribute name="AttackModificationType">
@@ -59,6 +79,7 @@
 								<xs:enumeration value="ADDITION"/>
 								<xs:enumeration value="SUBSTRACTION"/>
 								<xs:enumeration value="SET"/>
+                <xs:enumeration value="NONE"/>
 							</xs:restriction>
 						</xs:simpleType>
 					</xs:attribute>
@@ -69,6 +90,7 @@
 								<xs:enumeration value="ADDITION"/>
 								<xs:enumeration value="SUBSTRACTION"/>
 								<xs:enumeration value="SET"/>
+                <xs:enumeration value="NONE"/>
 							</xs:restriction>
 						</xs:simpleType>
 					</xs:attribute>
@@ -81,10 +103,21 @@
 								<xs:enumeration value="RANDOM"/>
 								<xs:enumeration value="ALL"/>
 								<xs:enumeration value="AUTO"/>
+                <xs:enumeration value="RANDOM_SPLIT"/>
 							</xs:restriction>
 						</xs:simpleType>
 					</xs:attribute>
 					<xs:attribute name="summonedCreatureName" type="xs:string"/>
+          <xs:attribute name="duration">
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:enumeration value="INFINITE"/>
+                <xs:enumeration value="EOT"/>
+                <xs:enumeration value="AURA"/>
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:attribute>
+          <xs:attribute name="addedTag" type="xs:string"/>
 				</xs:complexType>
 			</xs:element>
 		</xs:sequence>

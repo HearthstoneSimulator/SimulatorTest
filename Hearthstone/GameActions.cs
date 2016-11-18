@@ -8,18 +8,19 @@ using System.Xml.Linq;
 
 namespace Hearthstone
 {
-    public abstract class GenericAction : GameEngineFunctions
+    public abstract class GenericAction //: GameEngineFunctions
     {
-        public abstract void Perform(GameRepresentation Game);
+        public abstract void Perform(GameEngineFunctions Engine, GameRepresentation Game);
 
 
     }
     public class EndTurnAction : GenericAction
     {
 
-        public override void Perform(GameRepresentation Game)
+        public override void Perform(GameEngineFunctions Engine, GameRepresentation Game)
         {
-            base.EndTurn(Game);
+            Engine.DebugText("Performed EndTurnAction");
+            Engine.EndTurn(Game);
             //throw new NotImplementedException();
         }
     }
@@ -31,9 +32,10 @@ namespace Hearthstone
         {
             this.SelectedCard = SelectedCard;
         }
-        public override void Perform(GameRepresentation Game)
+        public override void Perform(GameEngineFunctions Engine, GameRepresentation Game)
         {
-            base.SelectCardFromHand(SelectedCard, Game);
+            Engine.DebugText("selected " + SelectedCard.name + " from hand");
+            Engine.SelectCardFromHand(SelectedCard, Game);
            // throw new NotImplementedException();
         }
     }
@@ -50,27 +52,35 @@ namespace Hearthstone
             this.SelectedCard = SelectedCard;
             this.PossibleTarget = PossibleTarget;
         }
-        public override void Perform(GameRepresentation Game)
+        public override void Perform(GameEngineFunctions Engine, GameRepresentation Game)
         {
-            base.PlayMonsterFromHand(SelectedCard, Game);
+            Engine.DebugText("PlayCardAction");
+            Engine.PlayMonsterFromHand(SelectedCard, Game);
             //throw new NotImplementedException();
         }
     }
     public class UseHeroPower : GenericAction
     {
 
-        public override void Perform(GameRepresentation Game)
+        public override void Perform(GameEngineFunctions Engine, GameRepresentation Game)
         {
-            throw new NotImplementedException();
+            Engine.DebugText("Used Hero Power");
         }
     }
 
     public class SelectTargetAction : GenericAction
     {
+        private Card SelectedCard;
         //probably needed for player interaction
-        public override void Perform(GameRepresentation Game)
+        public SelectTargetAction(Card SelectedCard)
         {
-            throw new NotImplementedException();
+            this.SelectedCard = SelectedCard;
+        }
+        public override void Perform(GameEngineFunctions Engine, GameRepresentation Game)
+        {
+            Engine.DebugText("selectTarget");
+            Engine.SelectSecondaryTarget(SelectedCard, Game);
+           // throw new NotImplementedException();
         }
     }
     public class AttackWithMonsterAction : GenericAction
@@ -82,11 +92,12 @@ namespace Hearthstone
             this.AttackingMonster = AttackingMonster;
             this.SelectedTarget = SelectedTarget;
         }
-        public override void Perform(GameRepresentation Game)
+        public override void Perform(GameEngineFunctions Engine, GameRepresentation Game)
         {
-            if (base.CanAttack(AttackingMonster, Game))
+            Engine.DebugText("attack action with "+AttackingMonster.name+" on "+SelectedTarget);
+            if (Engine.CanAttack(AttackingMonster, Game))
             {
-                base.AttackWithMonster(AttackingMonster, SelectedTarget, Game);
+                Engine.AttackWithMonster(AttackingMonster, SelectedTarget, Game);
             }
             //throw new NotImplementedException();
         }
@@ -109,7 +120,7 @@ namespace Hearthstone
             this.TargetTags = TargetTags;
 
         }
-        public override void Perform(GameRepresentation Game)
+        public override void Perform(GameEngineFunctions Engine, GameRepresentation Game)
         {
 
             //throw new NotImplementedException();

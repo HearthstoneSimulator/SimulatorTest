@@ -281,6 +281,10 @@ namespace Hearthstone
 
         private void SelectableCards_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            P0Field.SelectedItem = null;
+            P1Field.SelectedItem = null;
+            P0Hand.SelectedItem = null;
+            P1Hand.SelectedItem = null;
             VM.SelectCardFromHand(((sender as ListBox).SelectedItem as Card));
             if (ValidTargets.HasItems)
             {
@@ -290,10 +294,6 @@ namespace Hearthstone
             {
                 Confirm.IsEnabled = true;
             }
-            P0Field.SelectedItem = null;
-            P1Field.SelectedItem = null;
-            P0Hand.SelectedItem = null;
-            P1Hand.SelectedItem = null;
             if (P0Hand.Items.Contains((sender as ListBox).SelectedItem as Card))
             {
                 P0Hand.SelectedItem = (sender as ListBox).SelectedItem as Card;

@@ -16,10 +16,10 @@ namespace Hearthstone
         GameRepresentation Game;
         GameEngineFunctions Engine;
         XDocument Xdoc;
-        public CardLoader( GameRepresentation Game)
+        public CardLoader(GameEngineFunctions Engine, GameRepresentation Game)
         {
             this.Game = Game;
-            Engine = new GameEngineFunctions();
+            this.Engine = Engine;
         }
         public void LoadCards(string XdocName)
         {
@@ -34,6 +34,11 @@ namespace Hearthstone
                 foreach (var tag in item.Element("Tags").Descendants())
                 {
                     newcard.tags.Add(tag.Name.ToString());
+                    if (tag.Name.ToString() == "Spell_Damage")
+                    {
+                        newcard.defaultSpelldmg = Convert.ToInt32(tag.Value);
+                        newcard.currentSpelldmg = newcard.defaultSpelldmg;
+                    }
                 }
                 if (newcard.tags.Contains("Minion"))
                 {
@@ -47,6 +52,19 @@ namespace Hearthstone
                 }
                 else
                 {
+                    if (newcard.tags.Contains("Spell"))
+                    {
+                        //the card is a spell
+                        newcard.manacost = Convert.ToInt32(item.Element("Manacost").Value);
+                        if (item.Element("TargetNeeded").Value == "YES")
+                        {
+                            newcard.needsTargetSelected = true;
+                        }
+                        else
+                        {
+                            newcard.needsTargetSelected = false;
+                        }
+                    }
                     //TODO spells
                 }
                 //Loading skills
@@ -61,12 +79,17 @@ namespace Hearthstone
                     }
                 }
                 //Add the card to the Card Database
+                newcard.TemplateInstance = true;
                 Game.AllCards.Add(newcard);
             }
         }
         public Abbility ParseAbbility(XElement Abbilityxml,Card AssociatedCard)
         {
             Abbility ab = new Abbility(Abbilityxml.Element("Type").Value,Engine,Game);
+            if (ab.Kind == "Triggered")
+            {
+                ab.Trigger = Abbilityxml.Element("Trigger").Value;
+            }
             foreach (XElement tag in Abbilityxml.Element("Target").Element("Tags").Descendants())
             {
                 ab.TargetTags.Add(tag.Name.ToString());
@@ -90,9 +113,28 @@ namespace Hearthstone
                 case "Deal_Damage":
                     return new DealDamage(Convert.ToInt32(effect.Attribute("value").Value), Convert.ToInt32(effect.Attribute("targets").Value), effect.Attribute("selector").Value, Asscard, AssociatedAbbility.TargetTags) ;
                 case "Give_Buff":
-                    return new GiveBuff();
+                    int AttackValue = Convert.ToInt32(effect.Attribute("Attack").Value);
+                    int HPValue = Convert.ToInt32(effect.Attribute("Defense").Value);
+                    string AttackModType = effect.Attribute("AttackModificationType").Value;
+                    string HPModType = effect.Attribute("DefenseModificationType").Value;
+                    string Duration = effect.Attribute("duration").Value;
+                    string Selector = effect.Attribute("selector").Value;
+                    int TargetCount = Convert.ToInt32(effect.Attribute("targets").Value); 
+                    return new GiveBuff(AssociatedAbbility.TargetTags, Asscard, AttackValue, AttackModType, HPValue, HPModType , Selector, Duration,TargetCount) ;
                 case "Summon":
                     return new Summon(effect.Attribute("summonedCreatureName").Value, Asscard, AssociatedAbbility.TargetTags);
+                case "Discard":
+                    return new Discard(Asscard, AssociatedAbbility.TargetTags, Convert.ToInt32(effect.Attribute("value").Value), effect.Attribute("selector").Value);
+                case "Destroy":
+                    return new Destroy(Asscard, AssociatedAbbility.TargetTags, Convert.ToInt32(effect.Attribute("targets").Value), effect.Attribute("selector").Value);
+                case "CountAndReplace":
+                    return new CountAndReplace(AssociatedAbbility.TargetTags, Asscard, new List<string>( effect.Attribute("WhatToReplace").Value.Split(new[] {"," },StringSplitOptions.RemoveEmptyEntries)), effect.Attribute("FName").Value, Convert.ToInt32(effect.Attribute("SPos").Value), Convert.ToInt32(effect.Attribute("FPos").Value));
+                case "Freeze":
+                    return new Freeze(Asscard, effect.Attribute("selector").Value, Convert.ToInt32(effect.Attribute("targets").Value), AssociatedAbbility.TargetTags);
+                case "Transform":
+                    return new Transform(Asscard, effect.Attribute("selector").Value, Convert.ToInt32(effect.Attribute("targets").Value), effect.Attribute("summonedCreatureName").Value, AssociatedAbbility.TargetTags);
+                case "Give_Tag":
+                    return new GiveTag(AssociatedAbbility.TargetTags, effect.Attribute("selector").Value, Convert.ToInt32(effect.Attribute("targets").Value), Asscard, effect.Attribute("addedTag").Value);
                 default:
                     return null;
                 

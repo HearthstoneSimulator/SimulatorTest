@@ -2,13 +2,13 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:Hearthstone"
-        Title="SimulationWindow" Height="556.977" Width="1200.674">
+        Title="SimulationWindow" Height="742.977" Width="1200.674">
     <Grid>
         <Button x:Name="EOTbutt" Content="END TURN" HorizontalAlignment="Left" Height="34" Margin="768,254,0,0" VerticalAlignment="Top" Width="102" RenderTransformOrigin="0.655,0.059" Click="Button_Click_1"/>
 
         <ListBox x:Name="P1Field" ItemsSource="{Binding P1Field}" HorizontalAlignment="Left" Height="114" Margin="145,97,0,0" VerticalAlignment="Top" Width="554" IsEnabled="False"/>
         <ListBox x:Name="P0Field" ItemsSource="{Binding P0Field}" HorizontalAlignment="Left" Height="117" Margin="145,254,0,0" VerticalAlignment="Top" Width="554" IsEnabled="False"/>
-        <ListBox x:Name="P0Hand" ItemsSource="{Binding P0Hand}" HorizontalAlignment="Left" Height="104" Margin="145,413,0,0" VerticalAlignment="Top" Width="554" SelectionChanged="P0Hand_SelectionChanged" LostFocus="PHand_LostFocus" IsEnabled="False"/>
+        <ListBox x:Name="P0Hand" ItemsSource="{Binding P0Hand}" HorizontalAlignment="Left" Height="224" Margin="145,413,0,0" VerticalAlignment="Top" Width="554" SelectionChanged="P0Hand_SelectionChanged" LostFocus="PHand_LostFocus" IsEnabled="False"/>
         <ListBox x:Name="P1Hand" ItemsSource="{Binding P1Hand}" HorizontalAlignment="Left" Height="63" Margin="145,0,0,0" VerticalAlignment="Top" Width="554" SelectionChanged="P1Hand_SelectionChanged" LostFocus="PHand_LostFocus" IsEnabled="False"/>
         <ListBox x:Name="ValidTargets"  ItemsSource="{Binding ValidTargets}" HorizontalAlignment="Left" Height="100" VerticalAlignment="Top" Width="253" Margin="913,149,0,0" SelectionChanged="ValidTargets_SelectionChanged"/>
         <ListBox x:Name="SelectableCards"  ItemsSource="{Binding SelectableCards}" HorizontalAlignment="Left" Height="108" Margin="913,36,0,0" VerticalAlignment="Top" Width="253" SelectionChanged="SelectableCards_SelectionChanged"/>
@@ -32,6 +32,10 @@
         <Label x:Name="P1Mana" Content="{Binding P1ManaTest}" HorizontalAlignment="Left" Height="23" Margin="85,413,0,0" VerticalAlignment="Top" Width="55"/>
         <Button Content="Button" HorizontalAlignment="Left" Height="23" Margin="52,371,0,0" VerticalAlignment="Top" Width="72" Click="Button_Click_2"/>
         <Label x:Name="MyCardFromField" Content="{Binding ElementName=ValidTargets, Path=SelectedValue, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource CardToStringConverter}}" HorizontalAlignment="Left" Height="128" Margin="988,342,0,0" VerticalAlignment="Top" Width="178"/>
+        <Label x:Name="label" Content="My Hitpoints:" HorizontalAlignment="Left" Height="30" Margin="145,216,0,0" VerticalAlignment="Top" Width="84"/>
+        <Label x:Name="label1" Content="{Binding P1Hitpoints, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Margin="254,216,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.301,-0.121" Height="37" Width="51"/>
+        <Label x:Name="label2" Content="Enemy Hitpoints:" HorizontalAlignment="Left" Margin="399,216,0,0" VerticalAlignment="Top" Height="41"/>
+        <Label x:Name="label3" Content="{Binding P2Hitpoints, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Margin="562,216,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.641,-0.637" Height="37" Width="90"/>
 
     </Grid>
 </Window>

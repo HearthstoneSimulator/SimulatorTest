@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Threading;
 
 namespace Hearthstone
 {
@@ -44,6 +45,14 @@ namespace Hearthstone
         {
             get { return test.P2ManaTest; }
         }
+        public string P1Hitpoints
+        {
+            get { return test.P1Hitpoints; }
+        }
+        public string P2Hitpoints
+        {
+            get { return test.P2Hitpoints; }
+        }
         static ViewModel VM;
         
         public static ViewModel Instance
@@ -64,6 +73,8 @@ namespace Hearthstone
           //  test.ManaChanged += Test_ManaChanged;
             test.ManaChanged += Test_AnyChange;
             //test.PlayGame();
+           // Thread testThread = new Thread(test.StartOneGame);
+           // testThread.Start();
         }
 
         void Test_ManaChanged(object sender, EventArgs e)
@@ -88,6 +99,14 @@ namespace Hearthstone
             {
                 PropertyChanged(this, new PropertyChangedEventArgs("SelectedCardTest"));
             }
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs("P1Hitpoints"));
+            }
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs("P2Hitpoints"));
+            }
         }
 
 
@@ -98,21 +117,28 @@ namespace Hearthstone
         }
         public void IncreaseManaProperTest()
         {
-           // test.InitialiseTurn();
+            //End Turn Button pressed
+            // test.InitialiseTurn();
             //test.PlayGame();
+
+
             test.EndTurn();
+            //test.PlayersAction = new EndTurnAction();
         }
         public void SelectCardFromHand(Card SelecctedCard)
         {
             test.SelectCardFromHand(SelecctedCard);
+            //test.PlayersAction = new SelectCardAction(SelecctedCard);
         }
         public void PlaySelectedMonster(Card SelectedCard)
         {
             test.PlayMonsterFromHand(SelectedCard);
+            //test.PlayersAction = new PlayCardFromHandAction(SelectedCard, null);
         }
         public void SelectSecondaryTarget(Card SelectedCard)
         {
             test.SelectSecondaryTarget(SelectedCard);
+            //test.PlayersAction = new SelectTargetAction(SelectedCard);
         }
         public event PropertyChangedEventHandler PropertyChanged;
 
