@@ -44,6 +44,7 @@ namespace GameIntestines
  
     public class GameEngineFunctions
     {
+        public bool writeDebugTexts = true;
         public void TransformMinions(List<string> TargetTags, string Selector, Card Origin, int TargetCount, string TransformedInto, GameRepresentation Game)
         {
             switch (Selector)
@@ -683,7 +684,7 @@ namespace GameIntestines
         }
         public void DebugText(string outString)
         {
-            if (true)
+            if (writeDebugTexts)
             {
                 Console.WriteLine(outString);
             }
@@ -790,6 +791,29 @@ namespace GameIntestines
                 Monster.turnsingame++;
             }
         }
+        public void TurnManagement(GameRepresentation Game)
+        {
+            InitialiseTurn(Game);
+            if (Game.EndTheGame)
+            {
+                return;
+            }
+            //TurnManagement(Game);
+            /*
+            if (Game.isThisPlayerAi[Game.CurrentPlayer])
+            {
+            }
+
+            while (!Game.EndTheGame)
+            {
+                InitialiseTurn(Game);
+                if (Game.EndTheGame)
+                {
+                    break;
+                }
+                //EndTurn(Game);
+            }*/
+        }
         public void InitialiseTurn(GameRepresentation Game)
         {
             int oldplayer = Game.CurrentPlayer;
@@ -805,21 +829,43 @@ namespace GameIntestines
             IncreaseMana(Game.CurrentPlayer, Game);
             //draw card
             DrawCard(Game.CurrentPlayer, Game);
+            if (Game.EndTheGame)
+            {
+                return;
+            }
+            
+            
             GetSelectableCards(Game);
             if (Game.isThisPlayerAi[Game.CurrentPlayer])
             {
+#if VERBOSE
                 DebugText("AI player "+Game.CurrentPlayer + " turn "+Game.TurnsTotal +" started");
+#endif
                 bool shouldEndTurn = false;
                 while (!shouldEndTurn)
                 {
-                    Game.Inteligences[Game.CurrentPlayer].getAction(Game).Perform(this, Game);
+                    if (Game.EndTheGame)
+                    {
+                        return;
+                    }
+                    else
+                    {
+
+                    GenericAction a = Game.Inteligences[Game.CurrentPlayer].getAction(Game);
+                    if (a is EndTurnAction)
+                    {
+                        shouldEndTurn = true;
+                    }
+                    a.Perform(this, Game);
                     if (Game.CurrentPlayer != oldplayer)
                     {
                         shouldEndTurn = true;
                     }
+                    }
                 }
             }
-            #region stuff
+            
+#region stuff
             /*
              *  
               if (Game.isThisPlayerAi[Game.CurrentPlayer])
@@ -856,7 +902,7 @@ namespace GameIntestines
 
               }
             */
-            #endregion
+#endregion
         }
         public void test(GameRepresentation Game)
         {
@@ -1251,17 +1297,35 @@ namespace GameIntestines
                             //Card coouldnt be found
                             if (Game.Players[0] == SelectedCard)
                             {
-                                Game.Players.Remove(SelectedCard);
+                                //Game.Players.Remove(SelectedCard);
                                 DebugText("player 0 (you) was defeated!");
-                                System.Environment.Exit(0);
+                                Game.EndTheGame = true;
+                                if (Game.winner == 0)
+                                {
+                                    Game.winner = 3;
+                                }
+                                else
+                                {
+                                    Game.winner = 1;
+                                }
+                                // System.Environment.Exit(0);
                             }
                             else
                             {
                                 if (Game.Players[1] == SelectedCard)
                                 {
-                                    Game.Players.Remove(SelectedCard);
+                                    //Game.Players.Remove(SelectedCard);
                                     DebugText("player 1 (your opponent) was defeated!");
-                                    System.Environment.Exit(0);
+                                    Game.EndTheGame = true;
+                                    if (Game.winner == 1)
+                                    {
+                                        Game.winner = 3;
+                                    }
+                                    else
+                                    {
+                                        Game.winner = 0;
+                                    }
+                                    //System.Environment.Exit(0);
                                 }
                                 else
                                 {

@@ -1,0 +1,8 @@
+C:\Users\Martin\Source\Repos\SimulatorTest\EpicConsoleSimulator\bin\Release\EpicConsoleSimulator.exe.config
+C:\Users\Martin\Source\Repos\SimulatorTest\EpicConsoleSimulator\bin\Release\EpicConsoleSimulator.exe
+C:\Users\Martin\Source\Repos\SimulatorTest\EpicConsoleSimulator\bin\Release\EpicConsoleSimulator.pdb
+C:\Users\Martin\Source\Repos\SimulatorTest\EpicConsoleSimulator\bin\Release\GameIntestines.dll
+C:\Users\Martin\Source\Repos\SimulatorTest\EpicConsoleSimulator\bin\Release\GameIntestines.pdb
+C:\Users\Martin\Source\Repos\SimulatorTest\EpicConsoleSimulator\obj\Release\EpicConsoleSimulator.csprojResolveAssemblyReference.cache
+C:\Users\Martin\Source\Repos\SimulatorTest\EpicConsoleSimulator\obj\Release\EpicConsoleSimulator.exe
+C:\Users\Martin\Source\Repos\SimulatorTest\EpicConsoleSimulator\obj\Release\EpicConsoleSimulator.pdb

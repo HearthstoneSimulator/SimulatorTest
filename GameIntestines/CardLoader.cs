@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
+using System.IO;
 
 namespace GameIntestines
 {
@@ -20,6 +21,43 @@ namespace GameIntestines
         {
             this.Game = Game;
             this.Engine = Engine;
+        }
+        public void LoadDecks()
+        {
+            if (Game.decklists.Count == 2)
+            {
+                for (int j = 0; j < 2; j++)
+                {
+
+                    if (Game.decklists[j].name != "random")
+                    {
+
+                        StreamReader Twilight = new StreamReader(Game.decklists[j].name);
+                        while (!Twilight.EndOfStream)
+                        {
+                            string cardName = Twilight.ReadLine();
+                            for (int i = 0; i < Game.AllCards.Count; i++)
+                            {
+                                if (Game.AllCards[i].name == cardName)
+                                {
+                                    Game.decklists[j].cards.Add(Game.AllCards[i].Clone());
+                                    break;//maybe add log that card wasnt sucessfully found if such thing happens?
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        Random rng = new Random(j);
+                        
+                        for (int i = 0; i < 30; i++)
+                        {
+                            Game.decklists[j].cards.Add(Game.AllCards[rng.Next(Game.AllCards.Count)].Clone());
+                        }
+                    }
+                }
+
+            }
         }
         public void LoadCards(string XdocName)
         {

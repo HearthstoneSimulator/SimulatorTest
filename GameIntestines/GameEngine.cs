@@ -54,6 +54,11 @@ namespace GameIntestines
     {
         GameEngineFunctions engine = new GameEngineFunctions();
 
+        /// <summary>
+        /// gets action
+        /// </summary>
+        /// <param name="Game"></param>
+        /// <returns></returns>
         public override GenericAction getAction(GameRepresentation Game)
         {
 
@@ -399,6 +404,37 @@ namespace GameIntestines
 
         }
     }
+    public class Decklist
+    {
+        public string name;
+        public ObservableCollection<Card> cards;
+        public Decklist(string name)
+        {
+            this.name = name;
+            this.cards = new ObservableCollection<Card>();
+        }
+        public ObservableCollection<Card> clone(bool shuffled = false, Random rng = null)
+        {
+            ObservableCollection<Card> deck = new ObservableCollection<Card>();
+            for (int i = 0; i < cards.Count; i++)
+            {
+                deck.Add(cards[i].Clone());
+            }
+            if (shuffled)
+            {
+                ObservableCollection<Card> shuffledDeck = new ObservableCollection<Card>();
+                int cardCount = deck.Count;
+                for (int i = 0; i < cardCount; i++)
+                {
+                    int location = rng.Next(deck.Count);
+                    shuffledDeck.Add(deck[location].Clone());
+                    deck.RemoveAt(location);
+                }
+                return shuffledDeck;
+            }
+            return deck;
+        }
+    }
     public class GameRepresentation 
     {
        public List<Card> AllCards = new List<Card>();
@@ -431,6 +467,8 @@ namespace GameIntestines
         public List<int> FastSpellDamage = new List<int>();
         public Card EvulEngine;
         public List<int> HeroPowerUsages = new List<int>();
+        public int winner = 0; //0,1 players as designed, 3 = draw
+        public List<Decklist> decklists = new List<Decklist>();
 
     }
 
@@ -438,11 +476,17 @@ namespace GameIntestines
     {
         XDocument Xdoc;
         GameRepresentation Game;
-        GameEngineFunctions Engine;
+        public GameEngineFunctions Engine;
         Stack<GenericAction> StackOfThingsToDo;
+        public bool WriteDebugTexts = true;
         public event EventHandler ManaChanged;
         public GenericAction PlayersAction;
         public int mana = 0;
+        public string deck0name;
+        public string deck1name;
+        public string AI0name;
+        public string AI1name;
+        
        // int iter = 1;
 
         public ReadOnlyObservableCollection<Card> SelectableCardsTest
@@ -841,13 +885,14 @@ namespace GameIntestines
         }
         public void InitialiseGame()
         {
-            Game  = new GameRepresentation();
+            
+            Game = new GameRepresentation();
             Engine = new GameEngineFunctions();
-
+            Engine.writeDebugTexts = WriteDebugTexts;
             Game.EvulEngine = new Card();
             Game.EvulEngine.name = "Engine";
             CardLoader Loader = new CardLoader(Engine, Game);
-            
+            Engine.DebugText("**********************GAME INITIATION STARTED**********************");
             Loader.LoadCards("XMLCardBase.xml");
             #region OldLoad
             /*
@@ -896,7 +941,7 @@ namespace GameIntestines
             //Creating decks and setting up the game itself
             for (int i = 0; i < 2; i++)
             {
-                Game.Manapool.Add( new Mana());
+                Game.Manapool.Add(new Mana());
                 Game.Hands.Add(new ObservableCollection<Card>());
                 Game.Decks.Add(new ObservableCollection<Card>());
                 Game.Fields.Add(new ObservableCollection<Card>());
@@ -913,26 +958,26 @@ namespace GameIntestines
             Game.Players[0].name = "ME";
             Game.Players[1].name = "OPPONENT";
             Game.Hand1 = Game.Hands[0];
-                Game.Hand2 = Game.Hands[1];
-                Game.Deck1 = Game.Decks[0];
-                Game.Deck2 = Game.Decks[1];
-//            Random rng = new Random(1);
+            Game.Hand2 = Game.Hands[1];
+            Game.Deck1 = Game.Decks[0];
+            Game.Deck2 = Game.Decks[1];
+            //            Random rng = new Random(1);
             Random rng = new Random();
 
             //Make decks
             for (int i = 0; i < 30; i++)
             {
                 //make two decks
-             //   Game.AllCards.Add(new Card(i));
+                //   Game.AllCards.Add(new Card(i));
             }
             for (int i = 0; i < 15; i++)
             {
                 int ind = rng.Next(29 - 2 * i);
                 Game.Deck1.Add(Game.AllCards[ind].Clone());
-           //     Game.AllCards.RemoveAt(ind);
+                //     Game.AllCards.RemoveAt(ind);
                 ind = rng.Next(29 - 2 * i - 1);
                 Game.Deck2.Add(Game.AllCards[ind].Clone());
-          //      Game.AllCards.RemoveAt(ind);
+                //      Game.AllCards.RemoveAt(ind);
             }
             //Deal cards to players
             for (int i = 0; i < 3; i++)
@@ -951,17 +996,17 @@ namespace GameIntestines
             }
             //Determine starting player (and give the opponent the coin)
             Game.ActivePlayer = true; // I am the active player
-            Game.isThisPlayerAi.Add(false);// true); //false
+            Game.isThisPlayerAi.Add(false);// true);// true); //false
             Game.isThisPlayerAi.Add(true);
             Game.AIs.Add(null); //null
-            Game.AIs.Add( new AI());
-            Game.Inteligences.Add( new MyCustomAI()); //null
+            Game.AIs.Add(new AI());
+            Game.Inteligences.Add(new MyCustomAI()); //null
             Game.Inteligences.Add(new MyCustomAI());
             //Start the game
 
             //IncreaseMana(Game.CurrentPlayer);
             //  DrawCard(Game.CurrentPlayer);
-            
+
             Game.Fields[1].Add(Game.AllCards[27].Clone());
             Game.Hand1.Add(Game.AllCards[76].Clone());
             Game.Hand1.Add(Game.AllCards[76].Clone());
@@ -971,7 +1016,133 @@ namespace GameIntestines
             Game.Hand1.Add(Game.AllCards[32].Clone());
             //  Engine.GetSelectableCards(Game);
             //    Engine.test(Game);
-            Engine.InitialiseTurn(Game);
+            //Engine.InitialiseTurn(Game);
+            Game.winner = -1;
+            Engine.TurnManagement(Game);
+        }
+        public List<Card> MakeDeck(string sourceFile)
+        {
+            List<Card> deckToMake = new List<Card>();
+
+            return deckToMake;
+        }
+        public void prepareGame()
+        {
+            Game = new GameRepresentation();
+            Engine = new GameEngineFunctions();
+            Engine.writeDebugTexts = WriteDebugTexts;
+            Game.EvulEngine = new Card();
+            Game.EvulEngine.name = "Engine";
+            //preparing two decklists
+            Game.decklists.Add(new Decklist(deck0name));
+            Game.decklists.Add(new Decklist(deck1name));
+            CardLoader Loader = new CardLoader(Engine, Game);
+            Loader.LoadCards("XMLCardBase.xml");
+            Loader.LoadDecks();
+            Engine.DebugText("**********************GAME INITIATION STARTED**********************");
+        }
+        public void setStuff()
+        {
+            GameRepresentation backupGame = Game;
+            Game = new GameRepresentation();
+            Game.AllCards = backupGame.AllCards;
+            Game.decklists = backupGame.decklists;
+            for (int i = 0; i < 2; i++)
+            {
+                Game.Manapool.Add(new Mana());
+                Game.Hands.Add(new ObservableCollection<Card>());
+                Game.Decks.Add(new ObservableCollection<Card>());
+                Game.Fields.Add(new ObservableCollection<Card>());
+                Game.Players.Add(new Card());
+
+                Game.FastSpellDamage.Add(0);
+                Game.FastSpellDamage.Add(0);
+                Game.Players[i].basehitpoints = 30;
+                Game.Players[i].currenthitpoints = 30;
+                Game.Players[i].tags.Add("Player");
+            }
+            Game.Field1 = Game.Fields[0];
+            Game.Field2 = Game.Fields[1];
+            Game.Players[0].name = "ME";
+            Game.Players[1].name = "OPPONENT";
+            Game.Hand1 = Game.Hands[0];
+            Game.Hand2 = Game.Hands[1];
+            //            Random rng = new Random(1);
+            Random rng = new Random();
+
+            //Make decks
+            Game.Decks[0] = Game.decklists[0].clone(true,rng);
+            Game.Decks[1] = Game.decklists[1].clone(true,rng);
+            Game.Deck1 = Game.Decks[0];
+            Game.Deck2 = Game.Decks[1];
+
+            //shuffle decks
+
+            
+            /*
+            for (int i = 0; i < 30; i++)
+            {
+                //make two decks
+                //   Game.AllCards.Add(new Card(i));
+            }
+            for (int i = 0; i < 15; i++)
+            {
+                int ind = rng.Next(29 - 2 * i);
+                Game.Deck1.Add(Game.AllCards[ind].Clone());
+                //     Game.AllCards.RemoveAt(ind);
+                ind = rng.Next(29 - 2 * i - 1);
+                Game.Deck2.Add(Game.AllCards[ind].Clone());
+                //      Game.AllCards.RemoveAt(ind);
+            }*/
+            //Deal cards to players
+            for (int i = 0; i < 3; i++)
+            {
+                //this.P1Hand.Items.Add(Game.Deck1[0].name);
+                Game.Hand1.Add(Game.Deck1[0]);
+                Game.Deck1.RemoveAt(0);
+                //this.P0Hand.Items.Add(Game.Deck2[0].name);
+                Game.Hand2.Add(Game.Deck2[0]);
+                Game.Deck2.RemoveAt(0);
+            }
+            //initalise hero powers
+            for (int i = 0; i < 2; i++)
+            {
+                Game.HeroPowerUsages.Add(0);
+            }
+            //Determine starting player (and give the opponent the coin)
+            Game.ActivePlayer = true; // I am the active player
+            Game.isThisPlayerAi.Add(true);// true); //false
+            Game.isThisPlayerAi.Add(true);
+            Game.AIs.Add(null); //null
+            Game.AIs.Add(new AI());
+            Game.Inteligences.Add(new MyCustomAI()); //null
+            Game.Inteligences.Add(new MyCustomAI());
+            //Start the game
+
+            //IncreaseMana(Game.CurrentPlayer);
+            //  DrawCard(Game.CurrentPlayer);
+
+            //Game.Fields[1].Add(Game.AllCards[27].Clone());
+            //Game.Hand1.Add(Game.AllCards[76].Clone());
+            //Game.Hand1.Add(Game.AllCards[76].Clone());
+            //Game.Hand1.Add(Game.AllCards[0].Clone());
+            //Game.Hand1.Add(Game.AllCards[4].Clone());
+            //Game.Hand1.Add(Game.AllCards[76].Clone());
+            //Game.Hand1.Add(Game.AllCards[32].Clone());
+
+
+            //  Engine.GetSelectableCards(Game);
+            //    Engine.test(Game);
+            //Engine.InitialiseTurn(Game);
+            Game.winner = -1;
+        }
+        public void simulateOneGame()
+        {
+            Engine.TurnManagement(Game);
+        }
+        public int getWinner()
+        {
+            return Game.winner;
         }
         public void StartOneGame()
         {
