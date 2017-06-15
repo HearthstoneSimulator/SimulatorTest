@@ -16,3 +16,5 @@ C:\Users\Martin\Source\Repos\SimulatorTest\Hearthstone\obj\Release\Hearthstone.P
 C:\Users\Martin\Source\Repos\SimulatorTest\Hearthstone\obj\Release\Hearthstone.csproj.GenerateResource.Cache
 C:\Users\Martin\Source\Repos\SimulatorTest\Hearthstone\obj\Release\Hearthstone.exe
 C:\Users\Martin\Source\Repos\SimulatorTest\Hearthstone\obj\Release\Hearthstone.pdb
+C:\Users\Martin\Source\Repos\SimulatorTest\Hearthstone\bin\Release\GameIntestines.dll
+C:\Users\Martin\Source\Repos\SimulatorTest\Hearthstone\bin\Release\GameIntestines.pdb

@@ -346,28 +346,28 @@ namespace GameIntestines
                 case "RANDOM_SPLIT":
                         targets = Get_Targets(TargetTags, Origin, Game);
                     int originalTargetCount = targets.Count;
-                        for (int i = 0; i < ammount; i++)
-                        {
+                    for (int i = 0; i < ammount; i++)
+                    {
                         if (originalTargetCount <= 0)
                         {
-                            break;  
+                            break;
                         }
-                            Random rng = new Random();
-                            int rngint = rng.Next(0, originalTargetCount);
+                        Random rng = new Random();
+                        int rngint = rng.Next(0, originalTargetCount);
                         DealDamage(targets[rngint], 1, Game, Origin);
-                        if (targets[rngint].currenthitpoints <=0)
+                        if (targets[rngint].currenthitpoints <= 0)
                         {
                             targets.RemoveAt(rngint);
                             originalTargetCount--;
                         }
-                           /* targets[rngint].currenthitpoints -= 1;
-                        if (targets[rngint].currenthitpoints <=0)
-                        {
-                            KillMonster(targets[rngint], Game, Origin);
-                            targets.RemoveAt(rngint);
-                            originalTargetCount--;
-                        }*/
-                        }
+                        /* targets[rngint].currenthitpoints -= 1;
+                     if (targets[rngint].currenthitpoints <=0)
+                     {
+                         KillMonster(targets[rngint], Game, Origin);
+                         targets.RemoveAt(rngint);
+                         originalTargetCount--;
+                     }*/
+                    }
                     break;
                 default:
                     break;
@@ -627,6 +627,60 @@ namespace GameIntestines
             if (ManaChanged != null)
                 ManaChanged(this, new EventArgs());*/
         }
+        public List<Card> GetPlayableCards(GameRepresentation Game)
+        {
+            List<Card> playableCards = new List<Card>();
+            foreach (Card card in Game.Hands[Game.CurrentPlayer])
+            {
+                if (card.manacost <= Game.Manapool[Game.CurrentPlayer].availible)
+                {
+                    if (card.tags.Contains("Minion"))
+                    {
+                        playableCards.Add(card);
+                    }
+                    else
+                    {
+                        if (card.tags.Contains("Spell"))
+                        {
+                            List<Card> possibleTargets = Get_Targets(card.Skills[0], Game);
+                            if (possibleTargets != null)
+                            {
+                                if (possibleTargets.Count != 0 || card.needsTargetSelected == false)
+                                {
+                                    playableCards.Add(card);
+                                }
+                                else
+                                {
+
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            return playableCards;
+        }
+        public List<Card> GetMonstersThatCanAttack(GameRepresentation Game)
+        {
+            List<Card> monsters = new List<Card>();
+            foreach (Card card in Game.Fields[Game.CurrentPlayer])
+            {
+                if (CanAttack(card, Game))
+                {
+                    Game.SelectableCards.Add(card);
+                }
+            }
+            if (Game.Players[Game.CurrentPlayer].currentattack > 0)
+            {
+                //player can also attack
+                if (CanAttack(Game.Players[Game.CurrentPlayer], Game))
+                {
+                    Game.SelectableCards.Add(Game.Players[Game.CurrentPlayer]);
+                }
+            }
+
+            return monsters;
+        }
         public void GetSelectableCards(GameRepresentation Game)
         {
             Game.SelectableCards.Clear();
@@ -856,6 +910,12 @@ namespace GameIntestines
                     {
                         shouldEndTurn = true;
                     }
+                        if (a is PlayCardFromHandAction)
+                        {
+                            PlayCardFromHandAction p = a as PlayCardFromHandAction;
+                            Game.TargetForSomething = p.getTarget();
+                        }
+                    //Game.TargetForSomething = 
                     a.Perform(this, Game);
                     if (Game.CurrentPlayer != oldplayer)
                     {

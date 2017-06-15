@@ -58,10 +58,18 @@ namespace GameIntestines
             Engine.PlayMonsterFromHand(SelectedCard, Game);
             //throw new NotImplementedException();
         }
+        public Card getTarget()
+        {
+            return PossibleTarget;
+        }
     }
     public class UseHeroPower : GenericAction
     {
-
+        private Card PossibleTarget;
+        public UseHeroPower(Card PossibleTarget = null)
+        {
+            this.PossibleTarget = PossibleTarget;
+        }
         public override void Perform(GameEngineFunctions Engine, GameRepresentation Game)
         {
             Engine.DebugText("Used Hero Power");
