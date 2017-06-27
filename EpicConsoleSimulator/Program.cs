@@ -148,7 +148,7 @@ namespace EpicConsoleSimulator
             //We set up game with simulation data provided
 
             /////////////////////////////////////////////////////////////
-            
+            /*
             System.Diagnostics.Stopwatch stopky = new System.Diagnostics.Stopwatch();
             var sync = new object();
             long totalGameTime = 0;
@@ -231,10 +231,10 @@ namespace EpicConsoleSimulator
                 draws += drawss[i];
             }
 
-            //*/
+            */
             /////////////////////////////////////////////////////////////
             ///////////////////**************
-            /*
+            
             System.Diagnostics.Stopwatch stopky = new System.Diagnostics.Stopwatch();
             GameIntestines.GameEngine oneGame = new GameIntestines.GameEngine();
             oneGame.WriteDebugTexts = false;
@@ -287,7 +287,7 @@ namespace EpicConsoleSimulator
                     draws++;
                 }
             }
-            */
+            
             ///////////////////////////////////**************************
 
             //Simulation sucessfully simulated required ammount of games
