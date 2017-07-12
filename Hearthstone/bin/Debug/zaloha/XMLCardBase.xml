@@ -559,7 +559,7 @@
     <TargetNeeded>YES</TargetNeeded>
   <Targetable>YES</Targetable>
   </Card>
-  <!--Card>
+  <Card>
     <Name>Corruption</Name>
     <Attack/>
     <HP/>
@@ -578,14 +578,14 @@
         </Target>
         <Effect>
           <Function>TODO
-           todo add trigger function for destruction
+          <!-- todo add trigger function for destruction-->
           </Function>
         </Effect>
       </Skill>
     </Skills>
     <TargetNeeded>YES</TargetNeeded>
   <Targetable>YES</Targetable>
-  </Card-->
+  </Card>
   <Card>
     <Name>Mortal Coil</Name>
     <Attack/>
@@ -1550,16 +1550,6 @@
     <Manacost>7</Manacost>
     <Tags>
       <Minion/>
-    </Tags>
-  </Card>
-  <Card>
-    <Name>Zionist Scourge</Name>
-    <Attack>10</Attack>
-    <HP>10</HP>
-    <Manacost>1</Manacost>
-    <Tags>
-      <Minion/>
-      <Charge/>
     </Tags>
   </Card>
 </Cards>

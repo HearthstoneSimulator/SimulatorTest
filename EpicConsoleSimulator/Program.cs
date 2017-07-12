@@ -101,7 +101,7 @@ namespace EpicConsoleSimulator
             {
                 Log("No starting parametres detected - please imput your preferences manually.");
                 Log("Imput number of games you want to simulate.");
-                gamesToSimulate = 100000;// Convert.ToInt32(Console.ReadLine());
+                gamesToSimulate = 10000;// Convert.ToInt32(Console.ReadLine());
                 //deck0 = "deck1.txt";
                 deck0 = "basic_mage.txt";
                 deck1 = "basic_mage.txt";

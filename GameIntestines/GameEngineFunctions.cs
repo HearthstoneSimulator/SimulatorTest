@@ -847,7 +847,11 @@ namespace GameIntestines
         }
         public void TurnManagement(GameRepresentation Game)
         {
-            InitialiseTurn(Game);
+            while (!Game.EndTheGame)
+            {
+                InitialiseTurn(Game);
+            }
+            //InitialiseTurn(Game);
             if (Game.EndTheGame)
             {
                 return;
@@ -985,6 +989,7 @@ namespace GameIntestines
 
             foreach (Card minionInPlay in Game.Fields[i])
             {
+                    //check for buffs that end on end of turn
                     for (int j = 0; j < minionInPlay.ListOfStatBuffs.Count; j++)
                     {
                         if (minionInPlay.ListOfStatBuffs[j].Duration == "EOT")
@@ -993,8 +998,19 @@ namespace GameIntestines
                             j--;
                         }
                     }
-                    
-            }
+                    //check for skills triggered by end of turn
+                    foreach (Abbility abb in minionInPlay.Skills)
+                    {
+                        if (abb.Kind == "Triggered")
+                        {
+                            if (abb.Trigger == "End_Of_Turn")
+                            {
+                                abb.Perform(null);
+                            }
+                        }
+                    }
+
+                }
                 for (int j = 0; j < Game.Players[i].ListOfStatBuffs.Count; j++)
                 {
                     if (Game.Players[i].ListOfStatBuffs[j].Duration == "EOT")
@@ -1007,7 +1023,7 @@ namespace GameIntestines
                 
             }
             Game.CurrentPlayer = GetOtherPlayer(Game.CurrentPlayer);
-            InitialiseTurn(Game);
+            //InitialiseTurn(Game);
         }
         public int GetOtherPlayer(int currentPlayer)
         {
@@ -1155,6 +1171,18 @@ namespace GameIntestines
                         }
                     }
                 // break;
+                case "Adjecent":
+                    for (int i = 0; i < 2; i++)
+                    {
+                        if (Game.Fields[i].Contains(Origin)&&Game.Fields[i].Contains(Target))
+                        {
+                            if (Math.Abs(Game.Fields[i].IndexOf(Origin)-Game.Fields[i].IndexOf(Target)) == 1)
+                            {
+                                return true;
+                            }
+                        }
+                    }
+                    return false;
                 default:
                     if (Target.tags.Contains(tag))
                     {
@@ -1327,6 +1355,8 @@ namespace GameIntestines
                         break;
                 }
             }
+            //CARE
+            AuraTigger(Game);
             if (SelectedMonster.currentSpelldmg >= 0)
             {
             }
@@ -1586,10 +1616,24 @@ namespace GameIntestines
             {
                 if (mbysummon.ToString() == MonsterName)
                 {
-                    Game.Fields[WhichPlayerSummons].Add(mbysummon.Clone());
+                    Card summon = mbysummon.Clone();
+                    Game.Fields[WhichPlayerSummons].Add(summon);
+                    MonsterComesIntoPlay(summon, Game);
                     break;
                 }
             }
+        }
+        public Card GetCopyOfCardFromDatabase(string CardName, GameRepresentation Game)
+        {
+            for (int i = 0; i < Game.AllCards.Count; i++)
+            {
+                if (CardName == Game.AllCards[i].name)
+                {
+                    return Game.AllCards[i].Clone();                    
+                }
+            }
+            throw new Exception("Could not find card in database. " + CardName);
+            //return null;
         }
     }
 }

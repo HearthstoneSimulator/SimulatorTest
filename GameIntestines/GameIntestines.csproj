@@ -44,8 +44,10 @@
     <Compile Include="CardFunctions.cs" />
     <Compile Include="CardLoader.cs" />
     <Compile Include="GameActions.cs" />
+    <Compile Include="GameAIs.cs" />
     <Compile Include="GameEngine.cs" />
     <Compile Include="GameEngineFunctions.cs" />
+    <Compile Include="GameEnTities.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

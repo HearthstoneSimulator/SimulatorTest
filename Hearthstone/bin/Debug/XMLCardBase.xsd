@@ -61,6 +61,7 @@
       <xs:element name="Adjecent" minOccurs="0"/>
       <xs:element name="NonTargetable" minOccurs="0"/>
       <xs:element name="UniqueInstance" minOccurs="0"/>
+      <xs:element name="HeroPower" minOccurs="0"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="SkillsT">

@@ -344,5 +344,26 @@ namespace GameIntestines
             return this;
         }
     }
+    public class TotemicCall : CardFunctions
+    {
+        string[] TotemsToSummon = { "Searing Totem", "Healing Totem", "Stoneclaw Totem", "Wrath Of Air Totem" };
+        public TotemicCall( Card AssociatedCard, List<string> TargetTags)
+        {
+            this.AssociatedCard = AssociatedCard;
+            this.TargetTags = TargetTags;
+            this.name = "Totemic Call";
+        }
+        public override CardFunctions Clone()
+        {
+            return this;
+        }
+
+        public override void Perform(GameEngineFunctions engine, GameRepresentation Game, Card SauceCard)
+        {
+            Random rng = new Random();
+            engine.SummonMonster(TotemsToSummon[rng.Next(5)], Game.CurrentPlayer, Game);
+
+        }
+    }
 
 }

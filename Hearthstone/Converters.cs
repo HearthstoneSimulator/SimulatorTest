@@ -20,7 +20,7 @@ namespace Hearthstone
             }
             if (value == null)
             {
-                return "xaxxaxaxa";
+                return "";
             }
             throw new Exception("Bad_Imput_Format");
         }
