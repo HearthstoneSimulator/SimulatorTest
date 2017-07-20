@@ -361,7 +361,8 @@ namespace GameIntestines
         public override void Perform(GameEngineFunctions engine, GameRepresentation Game, Card SauceCard)
         {
             Random rng = new Random();
-            engine.SummonMonster(TotemsToSummon[rng.Next(5)], Game.CurrentPlayer, Game);
+
+            engine.SummonMonster(TotemsToSummon[rng.Next(4)], Game.CurrentPlayer, Game);
 
         }
     }

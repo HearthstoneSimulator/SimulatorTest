@@ -67,6 +67,7 @@ namespace GameIntestines
                     }
                     break;
                 default:
+                    DebugText("TransformMinions only supports PLAYER selected minion. No minion was transformed.");
                     break;
             }
         }
@@ -279,37 +280,6 @@ namespace GameIntestines
                 }
             }*/
         }
-        public void PerformAbbility(Card Origin, Abbility UsedAbbility, Card PossibleTarget,GameRepresentation Game)
-        {
-            foreach (XElement efekt in UsedAbbility.Effects)
-            {
-
-                switch (efekt.Value)
-                {
-                    case "Deal_Damage":
-                        if (PossibleTarget != null)
-                        {
-                            List<Card> solotarget = new List<Card>();
-                            solotarget.Add(PossibleTarget);
-                            Deal_Damage(Origin, Convert.ToInt32(efekt.Attribute("value").Value), solotarget, efekt.Attribute("selector").Value, efekt.Attribute("targets").Value,Game);
-                        }
-                        //Deal_Damage();
-                        break;
-                    case "Give_Buff":
-                        if (PossibleTarget != null)
-                        {
-                            //it has one target
-                        }
-                        else
-                        {
-
-                        }
-                        break;
-                    default:
-                        break;
-                }
-            }
-        }
         public void Deal_Damage(Card Origin, int ammount, List<string> TargetTags, string selector, int number_of_targets, GameRepresentation Game)
         {
             List<Card> targets = new List<Card>();
@@ -484,6 +454,7 @@ namespace GameIntestines
             //now I need to find out which card I selected - it is some card from active player -> can find if it is from hand or from table
             if (Game.Hands[Game.CurrentPlayer].Contains(SelectedCard))
             {
+                
                 //the card is in players hand
                 if (SelectedCard.manacost <= Game.Manapool[Game.CurrentPlayer].availible && SelectedCard.tags.Contains("Minion"))
                 {
@@ -513,12 +484,21 @@ namespace GameIntestines
             }
             else
             {
+                if (Game.heroPowers[Game.CurrentPlayer] == SelectedCard && Game.heroPowers[Game.CurrentPlayer].manacost <= Game.Manapool[Game.CurrentPlayer].availible)
+                {//the "card" is in fact hero power and I have mana to play it
+                    Game.Manapool[Game.CurrentPlayer].availible -= SelectedCard.manacost;
+                    UseHeroPower( Game,SelectedCard);
+                }
+                else
+                {
+
                 //the card is on the players battlefield
                 //I am attacking the target (that is already valid and selected)
                 if (Game.TargetForSomething != null && SelectedCard != null)
                 {
                     AttackWithMonster(SelectedCard, Game.TargetForSomething,Game);
 
+                }
                 }
 
             }
@@ -560,7 +540,7 @@ namespace GameIntestines
                     }
                     else
                     {
-                        if (SelectedCard.tags.Contains("Spell"))
+                        if (SelectedCard.tags.Contains("Spell")||SelectedCard.tags.Contains("HeroPower"))
                         {
                             //the card is a spell
                             if (SelectedCard.needsTargetSelected)
@@ -728,12 +708,20 @@ namespace GameIntestines
                     Game.SelectableCards.Add(Game.Players[Game.CurrentPlayer]);
                 }
             }
+            if (Game.HeroPowerUsages[Game.CurrentPlayer] == 0 && Game.Manapool[Game.CurrentPlayer].availible >= Game.heroPowers[Game.CurrentPlayer].manacost)
+            {
+                Game.SelectableCards.Add(Game.heroPowers[Game.CurrentPlayer]);
+            }
         }
         public void SelectSecondaryTarget(Card SelectedCard, GameRepresentation Game)
         {
             if (Game.ValidTargetsP.Contains(SelectedCard))
             {
                 Game.TargetForSomething = SelectedCard;
+            }
+            else
+            {
+                DebugText("Selected target is not valid.");
             }
         }
         public void DebugText(string outString)
@@ -798,9 +786,18 @@ namespace GameIntestines
             if (ManaChanged != null)
                 ManaChanged(this, new EventArgs());*/
         }
-        public void UseHeroPower(GameRepresentation Game)
+        public void UseHeroPower(GameRepresentation Game, Card HeroPower )
         {
             //todo
+            if (HeroPower != null)
+            {
+                Game.HeroPowerUsages[Game.CurrentPlayer]++;
+                foreach (Abbility eff in HeroPower.Skills)
+                {
+                    eff.Perform(Game.TargetForSomething);//check this
+                }
+            }
+
         }
         public void ResetHeroPowerUsages(GameRepresentation Game)
         {
@@ -847,9 +844,17 @@ namespace GameIntestines
         }
         public void TurnManagement(GameRepresentation Game)
         {
-            while (!Game.EndTheGame)
+
+            //if (Game.ConsoleMode)
+           // {
+               // while (!Game.EndTheGame)
+                {
+                    InitialiseTurn(Game);
+                }
+            //}
+            //else
             {
-                InitialiseTurn(Game);
+
             }
             //InitialiseTurn(Game);
             if (Game.EndTheGame)
@@ -874,6 +879,7 @@ namespace GameIntestines
         }
         public void InitialiseTurn(GameRepresentation Game)
         {
+            Game.numberofturnspassed++;
             int oldplayer = Game.CurrentPlayer;
             //increase turn counter
             Game.TurnsTotal++;
@@ -909,22 +915,23 @@ namespace GameIntestines
                     else
                     {
 
-                    GenericAction a = Game.Inteligences[Game.CurrentPlayer].getAction(Game);
-                    if (a is EndTurnAction)
-                    {
-                        shouldEndTurn = true;
-                    }
+                        GenericAction a = Game.Inteligences[Game.CurrentPlayer].getAction(Game);
+                        if (a is EndTurnAction)
+                        {
+                            shouldEndTurn = true;
+                        }
                         if (a is PlayCardFromHandAction)
                         {
                             PlayCardFromHandAction p = a as PlayCardFromHandAction;
                             Game.TargetForSomething = p.getTarget();
                         }
-                    //Game.TargetForSomething = 
-                    a.Perform(this, Game);
-                    if (Game.CurrentPlayer != oldplayer)
-                    {
-                        shouldEndTurn = true;
-                    }
+                        //Game.TargetForSomething = 
+                        a.Perform(this, Game);
+                        if (Game.CurrentPlayer != oldplayer)
+                        {
+                            shouldEndTurn = true;
+                        }
+
                     }
                 }
             }
@@ -983,6 +990,10 @@ namespace GameIntestines
         }
         public void EndTurn(GameRepresentation Game)
         {
+            if (Game.EndTheGame)
+            {
+                return;
+            }
             //Game.CurrentPlayer = Game.CurrentPlayer + 1 - Game.CurrentPlayer*2;
             for (int i = 0; i < 2; i++)
             {
@@ -1023,7 +1034,11 @@ namespace GameIntestines
                 
             }
             Game.CurrentPlayer = GetOtherPlayer(Game.CurrentPlayer);
-            //InitialiseTurn(Game);
+            if (Game.EndTheGame)
+            {
+                return;
+            }
+            InitialiseTurn(Game);
         }
         public int GetOtherPlayer(int currentPlayer)
         {

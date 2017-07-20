@@ -8,6 +8,8 @@ using System.Xml.Linq;
 
 namespace GameIntestines
 {
+    
+
     public enum Tags
     {
         //Target related asdr s
@@ -293,7 +295,8 @@ namespace GameIntestines
         public int winner = 0; //0,1 players as designed, 3 = draw
         public List<Decklist> decklists = new List<Decklist>();
         public List<Card> heroPowers = new List<Card>();
-
+        public bool ConsoleMode = true;
+        public int numberofturnspassed = 0;
         public void reset()
         {
             AllCards = new List<Card>();
@@ -328,7 +331,8 @@ namespace GameIntestines
             HeroPowerUsages = new List<int>();
             winner = 0; //0,1 players as designed, 3 = draw
             decklists = new List<Decklist>();
-            heroPowers = new List<Card>();
+            numberofturnspassed = 0;
+            //heroPowers = new List<Card>();
         }
         public GameRepresentation Clone()
         {

@@ -130,7 +130,7 @@ namespace GameIntestines
         }
         public override void Perform(GameEngineFunctions Engine, GameRepresentation Game)
         {
-
+            Engine.DebugText("attempted to perform dealdamageaction which is currently not implemented cause it is cheating!");
             //throw new NotImplementedException();
         }
     }

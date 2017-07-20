@@ -1642,6 +1642,8 @@
         </Effect>
       </Skill>
     </Skills>
+    <TargetNeeded>YES</TargetNeeded>
+    <Targetable>YES</Targetable>
   </Card>
   <Card>
     <Name>Life Tap</Name>
@@ -1666,6 +1668,8 @@
         </Effect>
       </Skill>
     </Skills>
+    <TargetNeeded>NO</TargetNeeded>
+    <Targetable>NO</Targetable>
   </Card>
   <Card>
     <Name>Totemic Call</Name>
@@ -1688,5 +1692,7 @@
         </Effect>
       </Skill>
     </Skills>
+    <TargetNeeded>NO</TargetNeeded>
+    <Targetable>NO</Targetable>
   </Card>
 </Cards>

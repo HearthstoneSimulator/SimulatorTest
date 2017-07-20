@@ -318,6 +318,64 @@
     <TargetNeeded>NO</TargetNeeded>
     <Targetable>NO</Targetable>
   </Card>
+  <Card>
+    <Name>Searing Totem</Name>
+    <Attack>1</Attack>
+    <HP>1</HP>
+    <Manacost>1</Manacost>
+    <Tags>
+      <Minion/>
+      <Totem/>
+    </Tags>
+  </Card>
+  <Card>
+    <Name>Healing Totem</Name>
+    <Attack>0</Attack>
+    <HP>2</HP>
+    <Manacost>1</Manacost>
+    <Tags>
+      <Minion/>
+      <Totem/>
+    </Tags>
+    <Skills>
+      <Skill>
+        <Type>Triggered</Type>
+        <Trigger>End_Of_Turn</Trigger>
+        <Target>
+          <Tags>
+            <Minion/>
+            <Own/>
+          </Tags>
+        </Target>
+        <Effect>
+          <!-- todo fix auras-->
+          <Function targets="1" selector="ALL" value="1">Heal</Function>
+        </Effect>
+      </Skill>
+    </Skills>
+  </Card>
+  <Card>
+    <Name>Stoneclaw Totem</Name>
+    <Attack>0</Attack>
+    <HP>2</HP>
+    <Manacost>1</Manacost>
+    <Tags>
+      <Minion/>
+      <Totem/>
+      <Taunt/>
+    </Tags>
+  </Card>
+  <Card>
+    <Name>Wrath Of Air Totem</Name>
+    <Attack>0</Attack>
+    <HP>2</HP>
+    <Manacost>1</Manacost>
+    <Tags>
+      <Minion/>
+      <Totem/>
+      <Spell_Damage>1</Spell_Damage>
+    </Tags>
+  </Card>
     <Card>
     <Name>Frost Shock</Name>
     <Attack/>
@@ -384,6 +442,7 @@
             <Minion/>
             <Own/>
             <Adjecent/>
+            <UniqueInstance/>
           </Tags>
         </Target>
         <Effect><!-- todo fix auras-->
@@ -1561,5 +1620,79 @@
       <Minion/>
       <Charge/>
     </Tags>
+  </Card>
+  <Card>
+    <Name>Fireblast</Name>
+    <Attack/>
+    <HP/>
+    <Manacost>2</Manacost>
+    <Tags>
+      <HeroPower/>
+    </Tags>
+    <Skills>
+      <Skill>
+        <Type>HeroPower</Type>
+        <Target>
+          <Tags>
+            <Any/>
+          </Tags>
+        </Target>
+        <Effect>
+          <Function targets="1" value="1" selector="PLAYER">Deal_Damage</Function>
+        </Effect>
+      </Skill>
+    </Skills>
+    <TargetNeeded>YES</TargetNeeded>
+    <Targetable>YES</Targetable>
+  </Card>
+  <Card>
+    <Name>Life Tap</Name>
+    <Attack/>
+    <HP/>
+    <Manacost>2</Manacost>
+    <Tags>
+      <HeroPower/>
+    </Tags>
+    <Skills>
+      <Skill>
+        <Type>HeroPower</Type>
+        <Target>
+          <Tags>
+            <Own/>
+            <Player/>
+          </Tags>
+        </Target>
+        <Effect>
+          <Function targets="1" value="2" selector="ALL">Deal_Damage</Function>
+          <Function value="1" selector="AUTO">Draw_Card</Function>
+        </Effect>
+      </Skill>
+    </Skills>
+    <TargetNeeded>NO</TargetNeeded>
+    <Targetable>NO</Targetable>
+  </Card>
+  <Card>
+    <Name>Totemic Call</Name>
+    <Attack/>
+    <HP/>
+    <Manacost>2</Manacost>
+    <Tags>
+      <HeroPower/>
+    </Tags>
+    <Skills>
+      <Skill>
+        <Type>HeroPower</Type>
+        <Target>
+          <Tags>
+            <You/>
+          </Tags>
+        </Target>
+        <Effect>
+          <Function >Totemic Call</Function>
+        </Effect>
+      </Skill>
+    </Skills>
+    <TargetNeeded>NO</TargetNeeded>
+    <Targetable>NO</Targetable>
   </Card>
 </Cards>

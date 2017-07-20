@@ -147,6 +147,22 @@ namespace GameIntestines
                             newcard.needsTargetSelected = false;
                         }
                     }
+                    else
+                    {
+                        if (newcard.tags.Contains("HeroPower"))
+                        {
+                            newcard.manacost = Convert.ToInt32(item.Element("Manacost").Value);
+                            
+                            if (item.Element("TargetNeeded").Value == "YES")
+                            {
+                                newcard.needsTargetSelected = true;
+                            }
+                            else
+                            {
+                                newcard.needsTargetSelected = false;
+                            }
+                        }
+                    }
                     //TODO spells
                 }
                 //Loading skills
@@ -220,7 +236,8 @@ namespace GameIntestines
                 case "Totemic Call":
                     return new TotemicCall(Asscard, AssociatedAbbility.TargetTags);
                 default:
-                    return null;
+                    throw new Exception("Tried to load unknow card function");
+                    //return null;
                 
 
             }

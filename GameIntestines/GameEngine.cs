@@ -621,6 +621,10 @@ namespace GameIntestines
         {
             return Game.winner;
         }
+        public int getTurns()
+        {
+            return Game.TurnsTotal;
+        }
         public void InitialiseGame()
         {
             
@@ -730,6 +734,7 @@ namespace GameIntestines
             //initalise hero powers
             for (int i = 0; i < 2; i++)
             {
+                Game.heroPowers.Add(Engine.GetCopyOfCardFromDatabase("Totemic Call", Game));
                 Game.HeroPowerUsages.Add(0);
             }
             //Determine starting player (and give the opponent the coin)
