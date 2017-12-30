@@ -8,7 +8,100 @@ using System.Xml.Linq;
 
 namespace GameIntestines
 {
-    
+    public class PlayCardActionForLoadingGamestate
+    {
+        public string CardName;
+        public int Owner;
+        public int PossibleTarget = -2;
+    }
+    public class GameLoadState
+    {
+        public int[] PlayerHitpoints;
+        public int[] PlayerMAX;
+        public int[] Fatigues;
+        public Mana[] ManaCrystals;
+        public int P0HP
+        {
+            get { return PlayerHitpoints[0]; }
+            set { PlayerHitpoints[0] = value; }
+        }
+        public int P1HP
+        {
+            get { return PlayerHitpoints[1]; }
+            set { PlayerHitpoints[1] = value; }
+        }
+        public int P0MAX
+        {
+            get { return PlayerMAX[0]; }
+            set { PlayerMAX[0] = value; }
+        }
+        public int P1MAX
+        {
+            get { return PlayerMAX[0]; }
+            set { PlayerMAX[1] = value; }
+        }
+        public List<string> P0Hand;
+        public List<string> P1Hand;
+        public bool UsePlayerDecks = true;
+       public List<Card> P0Board;
+       public List<Card> P1Board;
+       public List<PlayCardActionForLoadingGamestate> P0Actions;
+       public List<PlayCardActionForLoadingGamestate> P1Actions;
+       public List<string> P0CardsToRemoveFromDeck;
+       public List<string> P1CardsToRemoveFromDeck;
+        public GameLoadState()
+        {
+            PlayerHitpoints = new int[2];
+            PlayerMAX = new int[2];
+            Fatigues = new int[2];
+            ManaCrystals = new Mana[2];
+            ManaCrystals[0] = new Mana();
+            ManaCrystals[1] = new Mana();
+            P0Board = new List<Card>();
+            P1Board = new List<Card>();
+            P0Actions = new List<PlayCardActionForLoadingGamestate>();
+            P1Actions = new List<PlayCardActionForLoadingGamestate>();
+            P0CardsToRemoveFromDeck = new List<string>();
+            P1CardsToRemoveFromDeck = new List<string>();
+            P0Hand = new List<string>();
+            P1Hand = new List<string>();
+            
+
+        }
+    }
+    public class StatBuffWrapper
+    {
+        public int AttackValue { get; set; }
+        public int HPValue { get; set; }
+        public string AttackModifierType { get; }
+        public string HPModifierType { get; }
+        public string Duration { get; }
+        public string Description { get; }
+        public StatBuffWrapper(int AVal, int HPVal, string AMType, string HPMType, string Duration, string Description = null)
+        {
+            this.AttackValue = AVal;
+            this.HPValue = HPVal;
+            this.AttackModifierType = AMType;
+            this.HPModifierType = HPMType;
+            this.Duration = Duration;
+            if (Description == null)
+            {
+                this.Description = "+" + AttackValue + "/+" + HPValue;
+            }
+            else
+            {
+                this.Description = Description;
+            }
+        }
+
+
+    }
+    public enum TargetSelector
+    {
+        Player, All
+
+    }
+
 
     public enum Tags
     {
@@ -113,9 +206,25 @@ namespace GameIntestines
             {
                 abb.Owner = cc;
             }
+            foreach (StatBuffWrapper buff in ListOfStatBuffs)
+            {
+                cc.ListOfStatBuffs.Add(buff);
+            }
             return cc;
         }
-
+        public Card Clone(GameRepresentation Game)
+        {
+            Card standardClone = this.Clone();
+            foreach (Abbility abb in this.Skills)
+            {
+                standardClone.Skills.Add(abb.Clone(Game));
+            }
+            foreach (Abbility abb in standardClone.Skills)
+            {
+                abb.Owner = standardClone;
+            }
+            return standardClone;
+        }
     }
     public class CardType
     {
@@ -149,6 +258,17 @@ namespace GameIntestines
             outone.Trigger = this.Trigger;
             return outone;
         }
+        public Abbility Clone(GameRepresentation Game2)
+        {
+            Abbility outone = new Abbility(this.Kind, this.engine, Game2);
+            foreach (CardFunctions fnc in this.Functions)
+            {
+                outone.Functions.Add(fnc.Clone());
+            }
+            outone.TargetTags = new List<string>(this.TargetTags);
+            outone.Trigger = this.Trigger;
+            return outone;
+        }
         //Constructor
         public Abbility(String Kind, GameEngineFunctions Engine, GameRepresentation Game)
         {
@@ -168,22 +288,7 @@ namespace GameIntestines
             foreach (CardFunctions Function in Functions)
             {
                 Function.Perform(engine, Game, this.Owner);
-            }
-
-            /* foreach (XElement effect in Effects)
-             {
-                 switch (effect.Value)
-                 {
-                     case "Deal_Damage":
-
-                         break;
-                     case "Heal":
-
-                         break;
-                     default:
-                         break;
-                 }
-             }*/
+            }            
         }
 
         public List<CardFunctions> Functions;
@@ -199,7 +304,7 @@ namespace GameIntestines
     public class Mana
     {
         public int availible;
-        int total;
+        public int total;
         public Mana()
         {
             this.availible = 0;
@@ -284,7 +389,6 @@ namespace GameIntestines
         public Card TargetForSomething;
         public List<Abbility> ActiveAuras = new List<Abbility>();
         public List<bool> isThisPlayerAi = new List<bool>();
-        public List<AI> AIs = new List<AI>();
         public List<GenericAI> Inteligences = new List<GenericAI>();
         public bool EndTheGame;
         public int TimeOfTheTurn = 0;
@@ -321,7 +425,6 @@ namespace GameIntestines
             TargetForSomething = null;
             ActiveAuras = new List<Abbility>();
             isThisPlayerAi = new List<bool>();
-            AIs = new List<AI>();
             Inteligences = new List<GenericAI>();
             EndTheGame = false;
             TimeOfTheTurn = 0;
@@ -332,12 +435,216 @@ namespace GameIntestines
             winner = 0; //0,1 players as designed, 3 = draw
             decklists = new List<Decklist>();
             numberofturnspassed = 0;
+            ConsoleMode = true;
             //heroPowers = new List<Card>();
         }
         public GameRepresentation Clone()
         {
             GameRepresentation Klon = new GameRepresentation();
+            foreach (Card karta in this.AllCards)
+            {
+                Klon.AllCards.Add(karta.Clone(Klon));
+            }
+            foreach (Card karta in this.Deck1)
+            {
+                Klon.Deck1.Add(karta.Clone(Klon));
+            }
+            foreach (Card karta in this.Deck2)
+            {
+                Klon.Deck2.Add(karta.Clone(Klon));
+            }
+            Klon.Decks.Add(Klon.Deck1);
+            Klon.Decks.Add(Klon.Deck2);
 
+            foreach (Card karta in this.Hand1)
+            {
+                Card clone = karta.Clone(Klon);
+                Klon.Hand1.Add(clone);
+                if (this.SelectableCards.Contains(karta))
+                {
+                    Klon.SelectableCards.Add(clone);
+                }
+                if (this.ValidTargetsP.Contains(karta))
+                {
+                    Klon.ValidTargetsP.Add(clone);
+                }
+                if (this.TargetForSomething == karta)
+                {
+                    Klon.TargetForSomething = clone;
+                }
+            }
+            foreach (Card karta in this.Hand2)
+            {
+                Card clone = karta.Clone(Klon);
+                Klon.Hand2.Add(clone);
+                if (this.SelectableCards.Contains(karta))
+                {
+                    Klon.SelectableCards.Add(clone);
+                }
+                if (this.ValidTargetsP.Contains(karta))
+                {
+                    Klon.ValidTargetsP.Add(clone);
+                }
+                if (this.TargetForSomething == karta)
+                {
+                    Klon.TargetForSomething = clone;
+                }
+            }
+            Klon.Hands.Add(Klon.Hand1);
+            Klon.Hands.Add(Klon.Hand2);
+            foreach (Card karta in this.Field1)
+            {
+                Card clone = karta.Clone(Klon);
+                Klon.Field1.Add(clone);
+                if (this.SelectableCards.Contains(karta))
+                {
+                    Klon.SelectableCards.Add(clone);
+                }
+                if (this.ValidTargetsP.Contains(karta))
+                {
+                    Klon.ValidTargetsP.Add(clone);
+                }
+                if (this.TargetForSomething == karta)
+                {
+                    Klon.TargetForSomething = clone;
+                }
+            }
+            foreach (Card karta in this.Field2)
+            {
+                Card clone = karta.Clone(Klon);
+                Klon.Field2.Add(clone);
+                if (this.SelectableCards.Contains(karta))
+                {
+                    Klon.SelectableCards.Add(clone);
+                }
+                if (this.ValidTargetsP.Contains(karta))
+                {
+                    Klon.ValidTargetsP.Add(clone);
+                }
+                if (this.TargetForSomething == karta)
+                {
+                    Klon.TargetForSomething = clone;
+                }
+            }
+            Klon.Fields.Add(Klon.Field1);
+            Klon.Fields.Add(Klon.Field2);
+            Klon.ManaP1.availible = this.ManaP1.availible;
+            Klon.ManaP1.total = this.ManaP1.total;
+            Klon.ManaP2.availible = this.ManaP2.availible;
+            Klon.ManaP2.total = this.ManaP2.total;
+            Klon.Manapool.Add(Klon.ManaP1);
+            Klon.Manapool.Add(Klon.ManaP2);
+
+            Klon.ActivePlayer = this.ActivePlayer;
+            Klon.CurrentPlayer = this.CurrentPlayer;
+            Klon.TurnsTotal = this.TurnsTotal;
+
+            for (int i = 0; i < 2; i++)
+            {
+                Card player = this.Players[i];
+                Card clone = player.Clone(Klon);
+                if (this.SelectableCards.Contains(player))
+                {
+                    Klon.SelectableCards.Add(clone);
+                }
+                if (this.ValidTargetsP.Contains(player))
+                {
+                    Klon.ValidTargetsP.Add(clone);
+                }
+                if (this.TargetForSomething == player)
+                {
+                    Klon.TargetForSomething = clone;
+                }
+                Klon.Players.Add(clone);
+            }
+            //doing nasty aura cloning
+            //cloning ActiveAuras
+            
+            foreach (Abbility aura in this.ActiveAuras)
+            {
+                for (int k = 0; k < 2; k++)
+                {
+                    if (Fields[k].Contains(aura.Owner))
+                    {
+                        for (int i = 0; i < this.Fields[k].Count; i++)
+                        {
+                            if (aura.Owner == Fields[k][i])
+                            {
+                                for (int j = 0; j < Fields[k][i].Skills.Count; j++)
+                                {
+                                    if (Fields[k][i].Skills[j] == aura)
+                                    {
+                                        //add aura to the klon aura list 
+                                        Klon.ActiveAuras.Add(Klon.Fields[k][i].Skills[j]);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+            }
+            //cloning auras to monsters
+            for (int i = 0; i < 2; i++)
+            {
+                //we iterate over every monster on the field
+                for (int k = 0; k < Fields[i].Count; k++)
+                {
+                    //and over all his auras
+                    foreach (Abbility oldaura in Fields[i][k].Auras)
+                    {
+                        //we find which aura he is affected by
+                        for (int j = 0; j < ActiveAuras.Count; j++)
+                        {
+                            if (ActiveAuras[j] == oldaura)
+                            {
+                                //we add aura on the same position to the monster in clone
+                                Klon.Fields[i][k].Auras.Add(Klon.ActiveAuras[j]);
+                                //we clone possible stat buff the aura gave to the monster so it can be properly deactivated in the future
+                                if (oldaura.Functions[0] is GiveBuff)
+                                {
+                                    for (int l = 0; l < Fields[i][k].ListOfStatBuffs.Count; l++)
+                                    {
+
+                                        if (Fields[i][k].ListOfStatBuffs[l] == (oldaura.Functions[0] as GiveBuff).BuffRepresentation)
+                                        {
+                                            //we found which buff of the old card was caused possibly by the aura
+                                            Klon.Fields[i][k].ListOfStatBuffs[l] = (Klon.ActiveAuras[j].Functions[0] as GiveBuff).BuffRepresentation;
+                                        }
+
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            
+            Klon.isThisPlayerAi.Add(isThisPlayerAi[0]);
+            Klon.isThisPlayerAi.Add(isThisPlayerAi[1]);
+
+            //AIs are not clonned so that the AI can actually gather some more information from the individual clones
+            //can be changed depending on the players needs
+            Klon.Inteligences = Inteligences;
+            Klon.EndTheGame = EndTheGame;
+            Klon.FastSpellDamage.Add(FastSpellDamage[0]);
+            Klon.FastSpellDamage.Add(FastSpellDamage[1]);
+            Klon.HeroPowerUsages.Add(HeroPowerUsages[0]);
+            Klon.HeroPowerUsages.Add(HeroPowerUsages[1]);
+            Klon.winner = winner;
+            for (int i = 0; i < 2; i++)
+            {
+                Klon.decklists.Add(new Decklist(decklists[i].name));
+                foreach (Card card in decklists[i].cards)
+                {
+                    Klon.decklists[i].cards.Add(card.Clone(Klon));
+                }
+
+            }
+            Klon.heroPowers.Add(heroPowers[0].Clone(Klon));
+            Klon.heroPowers.Add(heroPowers[1].Clone(Klon));
+            Klon.ConsoleMode = ConsoleMode;
+            Klon.numberofturnspassed = numberofturnspassed;
             return Klon;
         }
     }

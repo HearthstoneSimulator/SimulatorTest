@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<GameStates>
+  <GameState>
+    <Player0>        
+      <HPMax>30</HPMax>
+      <HPCurrent>20</HPCurrent>        
+      <ManaTotal>5</ManaTotal>
+      <ManaCurrent>3</ManaCurrent>
+      <Fatigue>0</Fatigue>
+      <Deck>
+        <CardName>Arcane Missiles</CardName>
+        <CardName>Arcane Missiles</CardName>
+      </Deck>
+      <Hand>
+        <CardName>Fireball</CardName>
+        <CardName>Nightblade</CardName>
+        <CardName>Wolfrider</CardName>
+      </Hand>
+      <Field>
+        <Card>
+          <CardName>Murloc Raider</CardName>
+          <CurrHP>3</CurrHP>
+          <CurrAT>6</CurrAT>
+          <MaxHP>7</MaxHP>
+          <MaxAT>9</MaxAT>
+        </Card>
+      </Field>
+    </Player0>
+    <Player1>
+      <HPMax>30</HPMax>
+      <HPCurrent>18</HPCurrent>
+      <ManaTotal>5</ManaTotal>
+      <ManaCurrent>5</ManaCurrent>
+      <Fatigue>0</Fatigue>
+      <Deck>
+        <CardName>Fireball</CardName>
+        <CardName>Fireball</CardName>
+      </Deck>
+      <Hand>
+        <CardName>River Crocolisk</CardName>
+        <CardName>Boulderfist Ogre</CardName>
+        <CardName>Wolfrider</CardName>
+      </Hand>
+      <Field>
+        <Card>
+          <CardName>Oasis Snapjaw</CardName>
+          <CurrHP>2</CurrHP>
+          <CurrAT>2</CurrAT>
+          <MaxHP>7</MaxHP>
+          <MaxAT>2</MaxAT>
+        </Card>
+      </Field>
+    </Player1>
+    <Actions>
+      <Play>
+        <CardName>Fireball</CardName>
+        <TargetPosition>-1</TargetPosition>
+        <Owner>0</Owner>
+      </Play>      
+    </Actions>
+  </GameState>
+</GameStates>

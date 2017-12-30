@@ -16,10 +16,7 @@ namespace EpicConsoleSimulator
         }
         static void Main(string[] args)
         {
-            var watch = Stopwatch.StartNew();
-            var preptime = Stopwatch.StartNew();
-            var gametime = new Stopwatch();
-            gametime.Reset();
+            
 
             int gamesToSimulate = 0;
             int player0wins = 0;
@@ -193,7 +190,11 @@ namespace EpicConsoleSimulator
 
             try
             {
-
+                var watch = Stopwatch.StartNew();
+                var preptime = new Stopwatch();
+                var gametime = new Stopwatch();
+                gametime.Reset();
+                preptime.Reset();
 
                 System.Diagnostics.Stopwatch stopky = new System.Diagnostics.Stopwatch();
                 GameIntestines.GameEngine oneGame = new GameIntestines.GameEngine();
@@ -220,7 +221,17 @@ namespace EpicConsoleSimulator
 
                     //start logging pure game time
                     gametime.Start();
-                    oneGame.simulateOneGame();
+                    try
+                    {
+                        oneGame.simulateOneGame();
+
+                    }
+                    catch (Exception)
+                    {
+                        Console.WriteLine("There was an error during simulation of game number " + i);
+                        continue;
+                        //throw;
+                    }
                     gametime.Stop();
 
 
@@ -266,7 +277,7 @@ namespace EpicConsoleSimulator
                 Console.WriteLine("There was an error during the simulation. Simulation could not finish properly.");
                 
                 Environment.Exit(1);
-                //throw;
+               
             }
         }
     }

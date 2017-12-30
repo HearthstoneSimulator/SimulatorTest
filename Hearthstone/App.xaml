@@ -8,7 +8,9 @@
             <Style.Resources>
                 <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" Color="LightBlue" Opacity=".4"/>
             </Style.Resources>
-        </Style>
+        </Style> 
         <local:CardToDetailedStringConverter x:Key="CardToStringConverter"/>
+        <local:ElementToSelectabilityConverter x:Key="ElementToSelectabilityConverter"/>
+
     </Application.Resources>
 </Application>

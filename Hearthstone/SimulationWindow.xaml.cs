@@ -1,6 +1,7 @@
 ﻿using GameIntestines;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,11 +17,11 @@ using System.Windows.Shapes;
 
 namespace Hearthstone
 {
-    
+
     /// <summary>
     /// Interaction logic for SimulationWindow.xaml
     /// </summary>
-    public partial class SimulationWindow : Window
+    public partial class SimulationWindow : Window, INotifyPropertyChanged
     {
         List<Card> AllCards = new List<Card>();
         List<Card> Deck1 = new List<Card>();
@@ -29,7 +30,7 @@ namespace Hearthstone
         List<Card> Hand2 = new List<Card>();
         Mana ManaP1 = new Mana();
         Mana ManaP2 = new Mana();
-       // GameEngine ge;
+        // GameEngine ge;
         public class Mana
         {
             int availible;
@@ -54,7 +55,18 @@ namespace Hearthstone
 
             }
         }
-        bool playerturn = true;
+        public bool isPlayer0Turn
+        {
+            get { return isP0Turn; }
+            set { isP0Turn = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(isPlayer0Turn))); PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(isPlayer1Turn))); }
+        }
+        public bool isPlayer1Turn
+        {
+            get { return !isPlayer0Turn; }
+        }
+        bool isTargetingPhase = false;
+        bool isP0Turn;
+
         //TODO:
         /*
          * switch turns so I write only one code
@@ -62,11 +74,11 @@ namespace Hearthstone
         */
         public class CardType
         {
-            public enum typ  {SPELL,WEAPON,CHARACTER};
-            public enum subtyp {NONE,BEAST,PLAYER,MURLOC };
+            public enum typ { SPELL, WEAPON, CHARACTER };
+            public enum subtyp { NONE, BEAST, PLAYER, MURLOC };
 
         }
-        
+
         /*
         public class Card
         {
@@ -99,8 +111,8 @@ namespace Hearthstone
         */
         public void checkforcardstodisplay()
         {
-            bool curpl = playerturn;
-            while (curpl == playerturn)
+            bool curpl = isPlayer0Turn;
+            while (curpl == isPlayer0Turn)
             {
 
                 this.Dispatcher.Invoke((Action)(() =>
@@ -111,7 +123,7 @@ namespace Hearthstone
                             MyCard.Content = Hand1[P1Hand.SelectedIndex].getAllText();
                             if (Hand1[0].target == Card.Target.NONE)
                             {
-                               
+
                             }
                         }
                     }));
@@ -125,10 +137,10 @@ namespace Hearthstone
         }
         public void update(bool player)
         {
-            
+
             if (player)
             {
-                if (Deck1.Count!=0)
+                if (Deck1.Count != 0)
                 {
                     this.P1Hand.Items.Add(Deck1[0].name);
                     Hand1.Add(Deck1[0]);
@@ -144,7 +156,7 @@ namespace Hearthstone
             }
             else
             {
-                if (Deck2.Count !=0)
+                if (Deck2.Count != 0)
                 {
                     this.P0Hand.Items.Add(Deck2[0].name);
                     Hand2.Add(Deck2[0]);
@@ -155,16 +167,19 @@ namespace Hearthstone
                     //fatigue
                 }
                 //ManaP2.Turn();
-               // P2Mana.Content = ManaP2;
+                // P2Mana.Content = ManaP2;
                 VM.dostuff();
             }
-            
+
         }
-        
+
         ViewModel VM;
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
         public SimulationWindow()
         {
-            
+            isPlayer0Turn = true;
             InitializeComponent();
             VM = ViewModel.Instance;
             DataContext = VM;
@@ -200,23 +215,37 @@ namespace Hearthstone
         }
 
 
-
+        //QuitButton
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             System.Environment.Exit(0);
         }
 
+        //EndTurnButton
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             VM.IncreaseManaProperTest();
-            playerturn = !playerturn;
+            if (!VM.IsPlayer1AI)
+            {
+                isPlayer0Turn = !isPlayer0Turn;
+
+            }
+
             SelectableCards.SelectedIndex = -1;
+            P0Field.SelectedItem = null;
+            P1Field.SelectedItem = null;
+            P0Hand.SelectedItem = null;
+            P1Hand.SelectedItem = null;
             Confirm.IsEnabled = false;
+
+            ResetSelectableFields();
+
             //update(playerturn);
             //playerturn = !playerturn;
             //Task gui = new Task(this.checkforcardstodisplay);
-          //  gui.Start();
+            //  gui.Start();
         }
+
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
@@ -225,7 +254,7 @@ namespace Hearthstone
 
         private void P0Hand_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-           // Card c = ((sender as ListBox).SelectedItem as Card);
+            // Card c = ((sender as ListBox).SelectedItem as Card);
             VM.SelectCardFromHand(((sender as ListBox).SelectedItem as Card));
             //VM.SelectCardFromHand((Card)(P0Hand.SelectedItem as Card));
         }
@@ -233,20 +262,47 @@ namespace Hearthstone
         private void PHand_LostFocus(object sender, RoutedEventArgs e)
         {
             //if (sender is ListBox)
-              //  (sender as ListBox).SelectedIndex = -1;
-            
+            //  (sender as ListBox).SelectedIndex = -1;
+
 
         }
 
-        private void P1Hand_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        /*    private void P1Hand_SelectionChanged(object sender, SelectionChangedEventArgs e)
+            {
+               // VM.SelectCardFromHand(P1Hand.SelectedIndex);
+            }*/
+
+        private void ResetSelectableFields()
         {
-           // VM.SelectCardFromHand(P1Hand.SelectedIndex);
+            var source = P0Hand.ItemsSource;
+            P0Hand.ItemsSource = null;
+            P0Hand.ItemsSource = source;
+
+            source = P1Hand.ItemsSource;
+            P1Hand.ItemsSource = null;
+            P1Hand.ItemsSource = source;
+
+            source = P0Field.ItemsSource;
+            P0Field.ItemsSource = null;
+            P0Field.ItemsSource = source;
+
+            source = P1Field.ItemsSource;
+            P1Field.ItemsSource = null;
+            P1Field.ItemsSource = source;
+
+            source = Player0Avatar.ItemsSource;
+            Player0Avatar.ItemsSource = null;
+            Player0Avatar.ItemsSource = source;
+
+            source = Player1Avatar.ItemsSource;
+            Player1Avatar.ItemsSource = null;
+            Player1Avatar.ItemsSource = source;
         }
 
         //Confirm Button
         private void Button_Click_3(object sender, RoutedEventArgs e)
         {
-            if (playerturn)
+            if (isPlayer0Turn)
             {
                 if (SelectableCards.SelectedIndex != -1)// && ValidTargets.Items.Count == 0)
                 {
@@ -254,16 +310,16 @@ namespace Hearthstone
                 }
                 if (P0Hand.SelectedIndex != -1)
                 {
-                  //  P0Field.Items.Add(P0Hand.SelectedItem);
+                    //  P0Field.Items.Add(P0Hand.SelectedItem);
                     //  P0Hand.Items.RemoveAt(P0Hand.SelectedIndex);
-                
+
                     VM.PlaySelectedMonster((P0Hand.SelectedItem as Card));
                 }
 
             }
             else
             {
-                if (SelectableCards.SelectedIndex != -1 )//&& ValidTargets.Items.Count == 0)
+                if (SelectableCards.SelectedIndex != -1)//&& ValidTargets.Items.Count == 0)
                 {
                     VM.PlaySelectedMonster(SelectableCards.SelectedItem as Card);
                 }
@@ -273,20 +329,35 @@ namespace Hearthstone
                     //  P0Hand.Items.RemoveAt(P0Hand.SelectedIndex);
 
                     VM.PlaySelectedMonster((P1Hand.SelectedItem as Card));
-                    
+
                 }
             }
             SelectableCards.SelectedIndex = -1;
+            //ValidTargets.SelectedIndex = -1;
+
+            ResetSelectableFields();
             Confirm.IsEnabled = false;
         }
 
         private void SelectableCards_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            /*
             P0Field.SelectedItem = null;
             P1Field.SelectedItem = null;
             P0Hand.SelectedItem = null;
-            P1Hand.SelectedItem = null;
+            P1Hand.SelectedItem = null;*/
+            if ((sender as ListBox).SelectedItem == null)
+            {
+                return;
+            }
+
+            if (isTargetingPhase)
+            {
+                return;
+            }
+
             VM.SelectCardFromHand(((sender as ListBox).SelectedItem as Card));
+
             if (ValidTargets.HasItems)
             {
                 Confirm.IsEnabled = false;
@@ -295,28 +366,112 @@ namespace Hearthstone
             {
                 Confirm.IsEnabled = true;
             }
-            if (P0Hand.Items.Contains((sender as ListBox).SelectedItem as Card))
+            if (isPlayer0Turn)
             {
-                P0Hand.SelectedItem = (sender as ListBox).SelectedItem as Card;
+                if (P0Hand.Items.Contains((sender as ListBox).SelectedItem as Card))
+                {
+                    P0Hand.SelectedItem = (sender as ListBox).SelectedItem as Card;
+                }
+                else
+                {
+                    P0Hand.SelectedIndex = -1;
+                }
+
+                if (P0Field.Items.Contains((sender as ListBox).SelectedItem as Card))
+                {
+                    P0Field.SelectedItem = (sender as ListBox).SelectedItem as Card;
+                }
+                else
+                {
+                    P0Field.SelectedIndex = -1;
+                }
+                if (Player0Avatar.Items.Contains((sender as ListBox).SelectedItem as Card))
+                {
+                    Player0Avatar.SelectedItem = (sender as ListBox).SelectedItem as Card;
+                }
+                else
+                {
+                    Player0Avatar.SelectedIndex = -1;
+                }
             }
-            if (P1Hand.Items.Contains((sender as ListBox).SelectedItem as Card))
+            else
             {
-                P1Hand.SelectedItem = (sender as ListBox).SelectedItem as Card;
-            } 
-            if (P0Field.Items.Contains((sender as ListBox).SelectedItem as Card))
-            {
-                P0Field.SelectedItem = (sender as ListBox).SelectedItem as Card;
-            } 
-            if (P1Field.Items.Contains((sender as ListBox).SelectedItem as Card))
-            {
-                P1Field.SelectedItem = (sender as ListBox).SelectedItem as Card;
+                if (P1Hand.Items.Contains((sender as ListBox).SelectedItem as Card))
+                {
+                    P1Hand.SelectedItem = (sender as ListBox).SelectedItem as Card;
+                }
+                else
+                {
+                    P1Hand.SelectedIndex = -1;
+                }
+
+                if (P1Field.Items.Contains((sender as ListBox).SelectedItem as Card))
+                {
+                    P1Field.SelectedItem = (sender as ListBox).SelectedItem as Card;
+                }
+                else
+                {
+                    P1Field.SelectedIndex = -1;
+                }
+
+                if (Player1Avatar.Items.Contains((sender as ListBox).SelectedItem as Card))
+                {
+                    Player1Avatar.SelectedItem = (sender as ListBox).SelectedItem as Card;
+                }
+                else
+                {
+                    Player1Avatar.SelectedIndex = -1;
+                }
             }
+            SelectableCards.SelectedItem = (sender as ListBox).SelectedItem as Card;
+
         }
 
         private void ValidTargets_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            isTargetingPhase = true;
+
+            if (Player0Avatar.Items.Contains((sender as ListBox).SelectedItem as Card))
+            {
+                Player0Avatar.SelectedItem = (sender as ListBox).SelectedItem as Card;
+            }
+            else
+            {
+                Player0Avatar.SelectedIndex = -1;
+            }
+
+            if (Player1Avatar.Items.Contains((sender as ListBox).SelectedItem as Card))
+            {
+                Player1Avatar.SelectedItem = (sender as ListBox).SelectedItem as Card;
+            }
+            else
+            {
+                Player1Avatar.SelectedIndex = -1;
+            }
+
+            if (P0Field.Items.Contains((sender as ListBox).SelectedItem as Card))
+            {
+                P0Field.SelectedItem = (sender as ListBox).SelectedItem as Card;
+            }
+            else
+            {
+                P0Field.SelectedIndex = -1;
+            }
+
+            if (P1Field.Items.Contains((sender as ListBox).SelectedItem as Card))
+            {
+                P1Field.SelectedItem = (sender as ListBox).SelectedItem as Card;
+            }
+            else
+            {
+                P1Field.SelectedIndex = -1;
+            }
+
             VM.SelectSecondaryTarget(ValidTargets.SelectedItem as Card);
             Confirm.IsEnabled = true;
+            isTargetingPhase = false;
         }
+
+
     }
 }

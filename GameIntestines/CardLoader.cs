@@ -22,6 +22,16 @@ namespace GameIntestines
             this.Game = Game;
             this.Engine = Engine;
         }
+        /// <summary>
+        /// This will load a state of game into given GameRepresentation instance from a given XML file.
+        /// </summary>
+        /// <param name="Engine"></param>
+        /// <param name="Game">Instance of this GameRepresentation will be modified to match the gamestate of the XML file. This instance has to have card database loaded else it will throw an error.</param>
+        /// <param name="XdocName">Name of the XML file which contains desired gamestate. By default set to "Gamestate.xml."</param>
+        public void LoadGameRepresenation(GameEngine Engine, GameRepresentation Game, string XdocName)
+        {
+
+        }
         public void LoadDecks()
         {
             if (Game.decklists.Count == 2)
@@ -102,6 +112,95 @@ namespace GameIntestines
                 }
 
             }
+        }
+
+        public GameLoadState LoadGameState(string XdocName)
+        {
+            GameLoadState loadedState = new GameLoadState();
+            Xdoc = XDocument.Load(XdocName);
+            var state = from cr in Xdoc.Descendants("GameState") select cr;
+            foreach (XElement item in state)
+            {
+                XElement tmp = item.Element("Player0");
+
+                loadedState.P0HP = Convert.ToInt32(tmp.Element("HPCurrent").Value);
+                loadedState.P0MAX = Convert.ToInt32(tmp.Element("HPMax").Value);
+                loadedState.ManaCrystals[0].total = Convert.ToInt32(tmp.Element("ManaTotal").Value);
+                loadedState.ManaCrystals[0].availible = Convert.ToInt32(tmp.Element("ManaCurrent").Value);
+                loadedState.Fatigues[0] = Convert.ToInt32(tmp.Element("Fatigue").Value);
+
+                foreach (var removedCard in tmp.Element("Deck").Descendants("CardName"))
+                {
+                    loadedState.P0CardsToRemoveFromDeck.Add(removedCard.Value);
+                }
+                foreach (var handCard in tmp.Element("Hand").Descendants("CardName"))
+                {
+                    loadedState.P0Hand.Add(handCard.Value);
+                }
+                foreach (var fieldCard in tmp.Element("Field").Descendants("Card"))
+                {
+                    Card dummyCard = new Card();
+                    dummyCard.name = fieldCard.Element("CardName").Value;
+                    dummyCard.baseattack = Convert.ToInt32(fieldCard.Element("MaxAT").Value);
+                    dummyCard.currentattack = Convert.ToInt32(fieldCard.Element("CurrAT").Value);
+                    dummyCard.basehitpoints = Convert.ToInt32(fieldCard.Element("MaxHP").Value);
+                    dummyCard.currenthitpoints = Convert.ToInt32(fieldCard.Element("CurrHP").Value);
+
+                    loadedState.P0Board.Add(dummyCard);
+                }
+
+                tmp = item.Element("Player1");
+                loadedState.P1HP = Convert.ToInt32(tmp.Element("HPCurrent").Value);
+                loadedState.P1MAX = Convert.ToInt32(tmp.Element("HPMax").Value);
+                loadedState.ManaCrystals[1].total = Convert.ToInt32(tmp.Element("ManaTotal").Value);
+                loadedState.ManaCrystals[1].availible = Convert.ToInt32(tmp.Element("ManaCurrent").Value);
+
+                foreach (var removedCard in tmp.Element("Deck").Descendants("CardName"))
+                {
+                    loadedState.P1CardsToRemoveFromDeck.Add(removedCard.Value);
+                }
+                foreach (var handCard in tmp.Element("Hand").Descendants("CardName"))
+                {
+                    loadedState.P1Hand.Add(handCard.Value);
+                }
+                foreach (var fieldCard in tmp.Element("Field").Descendants("Card"))
+                {
+                    Card dummyCard = new Card();
+                    dummyCard.name = fieldCard.Element("CardName").Value;
+                    dummyCard.baseattack = Convert.ToInt32(fieldCard.Element("MaxAT").Value);
+                    dummyCard.currentattack = Convert.ToInt32(fieldCard.Element("CurrAT").Value);
+                    dummyCard.basehitpoints = Convert.ToInt32(fieldCard.Element("MaxHP").Value);
+                    dummyCard.currenthitpoints = Convert.ToInt32(fieldCard.Element("CurrHP").Value);
+
+                    loadedState.P1Board.Add(dummyCard);
+                }
+
+                tmp = item.Element("Actions");
+                foreach (var playAction in tmp.Descendants("Play"))
+                {
+                    PlayCardActionForLoadingGamestate pcfl = new PlayCardActionForLoadingGamestate();
+                    pcfl.CardName = playAction.Element("CardName").Value;
+                    pcfl.PossibleTarget = Convert.ToInt32(playAction.Element("TargetPosition").Value);
+                    pcfl.Owner = Convert.ToInt32(playAction.Element("Owner").Value);
+                    if (pcfl.Owner == 0)
+                    {
+                        loadedState.P0Actions.Add(pcfl);
+                    }
+                    else
+                    {
+                        if (pcfl.Owner == 1)
+                        {
+                            loadedState.P1Actions.Add(pcfl);
+
+                        }
+                        else
+                        {
+                            Console.WriteLine("PlayAction had invalid owner number and was not added");
+                        }
+                    }
+                }
+            }
+            return loadedState;
         }
         public void LoadCards(string XdocName)
         {

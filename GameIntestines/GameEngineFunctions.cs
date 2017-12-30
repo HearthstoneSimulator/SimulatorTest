@@ -8,40 +8,7 @@ using System.Xml.Linq;
 
 namespace GameIntestines
 {
-    public class StatBuffWrapper
-    {
-        public int AttackValue { get; set; }
-        public int HPValue { get; set; }
-        public string AttackModifierType { get; }
-        public string HPModifierType { get; }
-        public string Duration { get; }
-        public string Description { get; }
-        public StatBuffWrapper(int AVal, int HPVal, string AMType, string HPMType, string Duration, string Description = null)
-        {
-            this.AttackValue = AVal;
-            this.HPValue = HPVal;
-            this.AttackModifierType = AMType;
-            this.HPModifierType = HPMType;
-            this.Duration = Duration;
-            if (Description == null)
-            {
-                this.Description = "+" + AttackValue + "/+" + HPValue;
-            }
-            else
-            {
-                this.Description = Description;
-            }
-        }
-        
 
-    }
-   public enum TargetSelector
-    {
-        Player,All
-
-    }
-
- 
     public class GameEngineFunctions
     {
         public bool writeDebugTexts = true;
@@ -253,32 +220,6 @@ namespace GameIntestines
             {
                 target.Auras.Add(AuraActivated);
             }
-            /*
-            foreach (XElement efekt in AuraActivated.Effects)
-            {
-                switch (efekt.Value)
-                {
-                    case "Give_Buff":
-                        //this is what should happen anyway
-                        if (efekt.Attribute("Attack") != null)
-                        {
-                            if (efekt.Attribute("AttackModificationType").Value == "ADDITION")
-                            {
-                                foreach (Card affectedMonster in Get_Targets(AuraActivated,Game))
-                                {
-                                    if (!affectedMonster.Auras.Contains(AuraActivated))
-                                    {
-                                        affectedMonster.Auras.Add(AuraActivated);
-                                        affectedMonster.currentattack += Convert.ToInt32(efekt.Attribute("Attack").Value);
-                                    }
-                                }
-                            }
-                        }
-                        break;
-                    default:
-                        break;
-                }
-            }*/
         }
         public void Deal_Damage(Card Origin, int ammount, List<string> TargetTags, string selector, int number_of_targets, GameRepresentation Game)
         {
@@ -465,10 +406,7 @@ namespace GameIntestines
                     Game.Fields[Game.CurrentPlayer].Add(SelectedCard);
                     MonsterComesIntoPlay(SelectedCard,Game);
                     MonsterGetsPlayed(SelectedCard,Game);
-
-                    /*
-                    if (ManaChanged != null)
-                        ManaChanged(this, new EventArgs());*/
+                    
                 }
                 else
                 {
@@ -503,12 +441,13 @@ namespace GameIntestines
 
             }
             GetSelectableCards(Game);
+            Game.ValidTargetsP.Clear();
         }
         public void SelectCardFromHand(Card SelectedCard, GameRepresentation Game)
         {
             Game.ValidTargetsP.Clear();
             //now I need to find out which card I selected - it is some card f rom active player -> can find if it is from hand or from table
-            if (Game.Hands[Game.CurrentPlayer].Contains(SelectedCard))
+            if (Game.Hands[Game.CurrentPlayer].Contains(SelectedCard)||Game.heroPowers.Contains(SelectedCard))
             {
                 //the card is in players hand
                 if (SelectedCard.manacost <= Game.Manapool[Game.CurrentPlayer].availible)
@@ -601,11 +540,7 @@ namespace GameIntestines
                         }
                     }
                 }
-                //GetValidTargets(SelectedCard) ;
             }
-            /*
-            if (ManaChanged != null)
-                ManaChanged(this, new EventArgs());*/
         }
         public List<Card> GetPlayableCards(GameRepresentation Game)
         {
@@ -845,37 +780,21 @@ namespace GameIntestines
         public void TurnManagement(GameRepresentation Game)
         {
 
-            //if (Game.ConsoleMode)
-           // {
-               // while (!Game.EndTheGame)
+            if (Game.ConsoleMode)
+            {
+                while (!Game.EndTheGame)
                 {
                     InitialiseTurn(Game);
                 }
-            //}
-            //else
-            {
-
             }
-            //InitialiseTurn(Game);
+            else
+            {
+                InitialiseTurn(Game);
+            }
             if (Game.EndTheGame)
             {
                 return;
             }
-            //TurnManagement(Game);
-            /*
-            if (Game.isThisPlayerAi[Game.CurrentPlayer])
-            {
-            }
-
-            while (!Game.EndTheGame)
-            {
-                InitialiseTurn(Game);
-                if (Game.EndTheGame)
-                {
-                    break;
-                }
-                //EndTurn(Game);
-            }*/
         }
         public void InitialiseTurn(GameRepresentation Game)
         {
@@ -900,6 +819,8 @@ namespace GameIntestines
             
             
             GetSelectableCards(Game);
+            #region
+            /*
             if (Game.isThisPlayerAi[Game.CurrentPlayer])
             {
 #if VERBOSE
@@ -934,46 +855,8 @@ namespace GameIntestines
 
                     }
                 }
-            }
-            
-#region stuff
-            /*
-             *  
-              if (Game.isThisPlayerAi[Game.CurrentPlayer])
-              {
-                  DebugText("AI player turn started");
-                  bool shouldEndTurn = false;
-                  while (!shouldEndTurn)
-                  {
-                      AIAction akce = Game.AIs[Game.CurrentPlayer].getAction(Game);
-                      DebugText("Asking AI for action");
-                      switch (akce.ActionIndex)
-                      {
-                          case 0:
-                              DebugText("AI wants to end the turn");
-                              shouldEndTurn = true;
-                              EndTurn();
-                              break;
-                          case 1:
-                              DebugText("AI plays monster" + akce.FirstCardSelection);
-                              PlayMonsterFromHand(akce.FirstCardSelection);
-                              break;
-                          case 2:
-                              if (CanAttack(akce.FirstCardSelection))
-                              {
-                                  AttackWithMonster(akce.FirstCardSelection, akce.SecondCardSelection);
-                                  Console.WriteLine("Monster " + akce.FirstCardSelection + " attakced " + akce.SecondCardSelection);
-
-                              }
-                              break;
-                          default:
-                              break;
-                      }
-                  }
-
-              }
-            */
-#endregion
+            }*/
+            #endregion
         }
         public void test(GameRepresentation Game)
         {
@@ -1038,7 +921,12 @@ namespace GameIntestines
             {
                 return;
             }
-            InitialiseTurn(Game);
+            
+            //CARE!
+            //if (!Game.ConsoleMode)
+            {
+                InitialiseTurn(Game);
+            }
         }
         public int GetOtherPlayer(int currentPlayer)
         {

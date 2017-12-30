@@ -2,3 +2,4 @@ C:\Users\Martin\Source\Repos\SimulatorTest\GameIntestines\bin\Release\GameIntest
 C:\Users\Martin\Source\Repos\SimulatorTest\GameIntestines\bin\Release\GameIntestines.pdb
 C:\Users\Martin\Source\Repos\SimulatorTest\GameIntestines\obj\Release\GameIntestines.dll
 C:\Users\Martin\Source\Repos\SimulatorTest\GameIntestines\obj\Release\GameIntestines.pdb
+C:\Users\Martin\Source\Repos\SimulatorTest\GameIntestines\obj\Release\GameIntestines.csprojResolveAssemblyReference.cache

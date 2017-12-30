@@ -54,6 +54,18 @@ namespace Hearthstone
         {
             get { return test.P2Hitpoints; }
         }
+        public ReadOnlyObservableCollection<Card> OpponentAvatarTest
+        {
+            get { return test.OpponentAvatarTest; }
+        }
+        public ReadOnlyObservableCollection<Card> Player0Avatar
+        {
+            get { return test.Player0Avatar; }
+        }
+        public bool IsPlayer1AI
+        {
+            get { return test.IsPlayer1AI; }
+        }
         static ViewModel VM;
         
         public static ViewModel Instance
@@ -70,7 +82,11 @@ namespace Hearthstone
         ViewModel()
         {
             test = new GameEngine();
-            test.InitialiseGame();
+
+            test.LoadGame();
+            //test.InitialiseGame();
+
+
           //  test.ManaChanged += Test_ManaChanged;
             test.ManaChanged += Test_AnyChange;
             //test.PlayGame();
@@ -108,6 +124,10 @@ namespace Hearthstone
             {
                 PropertyChanged(this, new PropertyChangedEventArgs("P2Hitpoints"));
             }
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs("ValidTargetsTest"));
+            }
         }
 
 
@@ -122,23 +142,36 @@ namespace Hearthstone
             // test.InitialiseTurn();
             //test.PlayGame();
 
-
-            test.EndTurn();
+            test.ProcessInputFromGUI(new EndTurnAction());
+           // test.EndTurn();
+            
+            
             //test.PlayersAction = new EndTurnAction();
         }
         public void SelectCardFromHand(Card SelecctedCard)
         {
-            test.SelectCardFromHand(SelecctedCard);
+            test.ProcessInputFromGUI(new SelectCardAction(SelecctedCard));
+            //test.SelectCardFromHand(SelecctedCard);
+            
+            
+            
             //test.PlayersAction = new SelectCardAction(SelecctedCard);
         }
         public void PlaySelectedMonster(Card SelectedCard)
         {
-            test.PlayMonsterFromHand(SelectedCard);
+            test.ProcessInputFromGUI(new PlayCardFromHandAction(SelectedCard,test.TargetForSomethingTest));
+            //test.PlayMonsterFromHand(SelectedCard);
+            
+            
             //test.PlayersAction = new PlayCardFromHandAction(SelectedCard, null);
         }
         public void SelectSecondaryTarget(Card SelectedCard)
         {
-            test.SelectSecondaryTarget(SelectedCard);
+
+            test.ProcessInputFromGUI(new SelectTargetAction(SelectedCard));
+            //test.SelectSecondaryTarget(SelectedCard);
+            
+            
             //test.PlayersAction = new SelectTargetAction(SelectedCard);
         }
         public event PropertyChangedEventHandler PropertyChanged;

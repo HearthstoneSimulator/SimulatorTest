@@ -8,6 +8,6 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("xmlcardbase.xml")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("gamestate.xml")]
 
 
